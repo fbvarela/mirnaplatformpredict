@@ -1,0 +1,56 @@
+
+hsa-mir-181a-2, hsa-mir-1233-1, hsa-mir-217, hsa-miR-181a-5p,
+hsa-miR-181a-3p, hsa-miR-181a-2-3p, hsa-mir-516b-2, hsa-mir-509-1,
+hsa-mir-513a-1, hsa-mir-509-1, hsa-mir-514a-1, hsa-mir-514a-2,				
+hsa-mir-514a-3, hsa-mir-544a, hsa-mir-512-2, hsa-mir-520e,
+hsa-mir-518f, hsa-mir-520b, hsa-mir-518b, hsa-mir-526a-1,
+hsa-mir-510, hsa-mir-532, hsa-mir-539,hsa-mir-545, hsa-mir-551a,hsa-mir-587
+
+hsa-mir-181a-2,hsa-mir-510
+ENSG00000012048, ENSG00000139618
+
+ENSG00000139618,ENSG00000139620,ENSG00000012048,
+ENSG00000255386,ENSG00000104679,ENSG00000048991,
+ENSG00000121410, ENSG00000231882
+gen_utr_id
+ID del extremo 3'UTR
+
+gen_utr_ref
+¿Es una secuencia de referencia?
+
+gen_utr_seq
+Secuencia del extremo 3'UTR
+
+down vote
+In PostgreSQL 9.2 and above, to disconnect everything except your session from the database you are connected to:
+
+
+input_mirna_id
+
+gen_id
+
+input_utr_id
+
+input_user_id
+input_user_alg
+
+input_user_comment
+
+sudo kill -9 25505
+
+>ENSG00000012048|ENST00000352993
+>ENSG00000012048|ENST00000354071
+>ENSG00000012048|ENST00000478531
+Sequence unavailable
+>ENSG00000012048|ENST00000476777
+Sequence unavailable
+>ENSG00000012048|ENST00000461221
+>ENSG00000012048|ENST00000471181
+>ENSG00000012048|ENST00000357654
+º>ENSG00000012048|ENST00000470026
+Sequence unavailable
+>ENSG00000012048|ENST00000468300
+>ENSG00000012048|ENST00000461798
+
+
+	

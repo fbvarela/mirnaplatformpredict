@@ -1,0 +1,117 @@
+
+hsa-mir-181a-2, hsa-mir-1233-1, hsa-mir-217, hsa-miR-181a-5p,
+hsa-miR-181a-3p, hsa-miR-181a-2-3p, hsa-mir-516b-2, hsa-mir-509-1,
+hsa-mir-513a-1, hsa-mir-509-1, hsa-mir-514a-1, hsa-mir-514a-2,				
+hsa-mir-514a-3, hsa-mir-544a, hsa-mir-512-2, hsa-mir-520e,
+hsa-mir-518f, hsa-mir-520b, hsa-mir-518b, hsa-mir-526a-1,
+hsa-mir-510, hsa-mir-532, hsa-mir-539,hsa-mir-545, hsa-mir-551a,hsa-mir-587
+
+hsa-mir-181a-2,hsa-mir-510
+ENSG00000012048, ENSG00000139618
+
+ENSG00000139618,ENSG00000139620,
+ENSG00000012048,ENSG00000255386,
+ENSG00000104679,ENSG00000048991,
+ENSG00000121410,ENSG00000231882
+gen_utr_id
+ID del extremo 3'UTR
+
+gen_utr_ref
+¿Es una secuencia de referencia?
+
+gen_utr_seq
+Secuencia del extremo 3'UTR
+
+down vote
+In PostgreSQL 9.2 and above, to disconnect everything except your session from the database you are connected to:
+
+
+input_mirna_id
+
+gen_id
+
+input_utr_id
+
+input_user_id
+input_user_alg
+
+input_user_comment
+
+sudo kill -9 25505
+
+tm_gen_info
+tm_mirna_info
+
+
+
+>ENSG00000012048|ENST00000352993
+>ENSG00000012048|ENST00000354071
+>ENSG00000012048|ENST00000478531
+Sequence unavailable
+>ENSG00000012048|ENST00000476777
+Sequence unavailable
+>ENSG00000012048|ENST00000461221
+>ENSG00000012048|ENST00000471181
+>ENSG00000012048|ENST00000357654
+º>ENSG00000012048|ENST00000470026
+Sequence unavailable
+>ENSG00000012048|ENST00000468300
+>ENSG00000012048|ENST00000461798
+
+mirna_info
+AGAAGGGCUAUCAGGCCAGCCUUCAGAGGACUCCAAGGAACAUUCAACGCUGUCGGUGAGUUUGGGAUUUGAAAAAACCACUGACCGUUGACUGUACCUUGGGGUCCUUA             0         1
+
+
+utr_info
+          gen_id          utr_id
+1 ENSG00000139618 ENST00000380152
+2 ENSG00000139618 ENST00000470094
+3 ENSG00000139618 ENST00000528762
+4 ENSG00000139618 ENST00000544455
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ... <truncated>
+1 GCATTTGCAAAGGCGACAATAAATTATTGACGCTTAACCTTTCCAGTTTATAAGACTGGAATATAATTTCAAACCACACATTAGTACTTATGTTGCACAATGAGAAAAGAAATTAGTTTCAAATTTACCTCAGCGTTTGTGTATCGGGCAAAAATCGTTTTGCCCGATTCCGTATTGGTATACTTTTGCTTCAGTTGCATATCTTAAAACTAAATGTAATTTATTAACTAATCAAGAAAAACATCTTTGGCTGAGCTCGGTGGCTCATGCCTGTAATCCCAACACTTTGAGAAGCTGAGGTGGGAGGAGTGCTTGAGGCCAGGAGTTCAAGACCAGCCTGGGCAACATAGGGAGACCCCCATCTTTACAAAGAAAAAAAAAAGGGGAAAAGAAAATCTTTTAAATCTTTGGATTTGATCACTACAAGTATTATTTTACAAGTGAAATAAACATACCATTTTCTTTTAGATTGTGTCATTAAATGGAATGAGGTCTCTTAGTACAGTTATTTTGATGCAGATAATTCCTTTTAGTTTAGCTACTATTTTAGGGGATTTTTTTTAGAGGTAACTCACTATGAAATAGTTCTCCTTAATGCAAATATGTTGGTTCTGCTATAGTTCCATCCTGTTCAAAAGTCAGGATGAATATGAAGAGTGGTGTTTCCTTTTGAGCAATTCTTCATCCTTAAGTCAGCATGATTATAAGAAAAATAGAACCCTCAGTGTAACTCTAATTCCTTTTTACTATTCCAGTGTGATCTCTGAAATTAAATTACTTCAACTAAAAATTCAAATACTTTAAATCAGAAGATTTCATAGTTAATTTATTTTTTTTTTCAACAAAATGGTCATCCAAACTCAAACTTGAGAAAATATCTTGCTTTCAAATTGGCACTGATTCTGCCTGCTTTATTTTTAGCGCTATCACAGGACCCAGAGCCTATGCCCTTTTAAACTTACCACAAAAGCAGAAGATTAATTCAATTTAAGATGATA... <truncated>
+2                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       ... <truncated>
+3                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       ... <truncated>
+4                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     GC... <truncated>
+  utr_precomp utr_ref
+1           0       1
+2           0       1
+3           0       1
+4           0       1
+
+
+binding_sites_precomp_bd
+bs_id       mirna_id          utr_id feat_id bs_mirna_seq_start bs_mirna_seq_end bs_utr_seq_start bs_utr_seq_end       bs_seq_seed bs_seq_seed_start bs_seq_seed_end bs_seq_region_3
+1    14 hsa-mir-181a-2 ENST00000528762       3                 12               25                4             54 AAACACAACAAAACCAT                NA              NA         AAACACA
+2    15 hsa-mir-181a-2 ENST00000528762       3                 12               25                4             54 AAACACAACAAAACCAT                NA              NA         AAACACA
+  bs_seq_region_3_start bs_seq_region_3_end      bs_seq_region_total bs_seq_region_total_start bs_seq_region_total_end bs_score bs_scoring_matrix bs_type bs_other
+1                    NA                  NA AAACACAACAAAAAACACAACAAA                        NA                      NA    152.2 {{1,2,3},{3,3,2}}       0     <NA>
+2                    NA                  NA AAACACAACAAAAAACACAACAAA                        NA                      NA    152.2 {{1,2,3},{3,3,2}}       0     <NA>
+
+
+mirna_utr_id_precomp
+  bs_id       mirna_id          utr_id precomp feat_id
+1  <NA> hsa-mir-181a-2 ENST00000380152       0    <NA>
+2  <NA> hsa-mir-181a-2 ENST00000470094       0    <NA>
+3    14 hsa-mir-181a-2 ENST00000528762       1       3
+4    15 hsa-mir-181a-2 ENST00000528762       1       3
+5  <NA> hsa-mir-181a-2 ENST00000544455       0    <NA>
+
+
+
+ENSG00000139618,
+ ENSG00000139620,
+ENSG00000012048,
+ ENSG00000255386,
+ ENSG00000104679,
+ENSG00000048991,
+ ENSG00000121410,
+ENSG00000231882
+
+ENSG00000104679
+ENSG00000121410 
+ENSG00000139620 
+ENSG00000255386
+
+
+dbClearResult(dbListResults(conn)[[1]])

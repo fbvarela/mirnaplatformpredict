@@ -1,0 +1,133 @@
+[ 2017-05-04 17:03:15 ] ERROR Error in (function (classes, fdef, mtable) : unable to find an inherited method for function ‘dbGetQuery’ for signature ‘"function", "character"’
+ 
+[ 2017-05-04 17:05:18 ] ERROR Error in (function (classes, fdef, mtable) : unable to find an inherited method for function ‘dbGetQuery’ for signature ‘"function", "character"’
+ 
+[ 2017-05-04 17:07:16 ] ERROR Error in (function (classes, fdef, mtable) : unable to find an inherited method for function ‘dbGetQuery’ for signature ‘"function", "character"’
+ 
+[ 2017-05-04 17:15:42 ] ERROR Error in (function (classes, fdef, mtable) : unable to find an inherited method for function ‘dbGetQuery’ for signature ‘"function", "character"’
+ 
+[ 2017-05-04 17:18:30 ] ERROR Error in (function (classes, fdef, mtable) : unable to find an inherited method for function ‘dbGetQuery’ for signature ‘"function", "character"’
+ 
+[ 2017-05-04 17:20:42 ] ERROR Error in (function (classes, fdef, mtable) : unable to find an inherited method for function ‘dbGetQuery’ for signature ‘"function", "character"’
+ 
+[ 2017-05-04 19:11:43 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): RS-DBI driver: (could not Retrieve the result : ERROR:  invalid byte sequence for encoding "UTF8": 0xe5
+)
+ 
+[ 2017-05-04 19:13:28 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): RS-DBI driver: (could not Retrieve the result : ERROR:  invalid byte sequence for encoding "UTF8": 0xe5
+)
+ 
+[ 2017-05-04 19:16:03 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): RS-DBI driver: (could not Retrieve the result : ERROR:  syntax error at or near "HϦ"
+LINE 1: HϦ
+        ^
+)
+ 
+[ 2017-05-04 19:17:27 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): RS-DBI driver: (could not Retrieve the result : ERROR:  invalid byte sequence for encoding "UTF8": 0xe5
+)
+ 
+[ 2017-05-04 19:45:14 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): RS-DBI driver: (could not Retrieve the result : ERROR:  invalid byte sequence for encoding "UTF8": 0xb6
+)
+ 
+[ 2017-05-04 19:49:50 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): RS-DBI driver: (could not Retrieve the result : ERROR:  syntax error at or near "{"
+LINE 1: ...2, 'AAACACAACAAAAAACACAACAAA', 5, 23, 152.200000, {1, 2, 3},...
+                                                             ^
+)
+ 
+[ 2017-05-04 20:04:45 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): RS-DBI driver: (could not Retrieve the result : ERROR:  syntax error at or near "{"
+LINE 1: ...2, 'AAACACAACAAAAAACACAACAAA', 5, 23, 152.200000, {1, 2, 3},...
+                                                             ^
+)
+ 
+[ 2017-05-04 20:09:30 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): RS-DBI driver: (could not Retrieve the result : ERROR:  invalid input syntax for type json
+LINE 1: ...AAA', 5, 23, 152.200000, '{{1, 2, 3},{2, 3, 4}}', '{{}}', 0)...
+                                                             ^
+DETAIL:  Expected string or "}", but found "{".
+CONTEXT:  JSON data, line 1: {{...
+)
+ 
+[ 2017-05-04 20:12:11 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): RS-DBI driver: (could not Retrieve the result : ERROR:  invalid input syntax for type json
+LINE 1: ...AAA', 5, 23, 152.200000, '{{1, 2, 3},{2, 3, 4}}', '{{}}', 0)...
+                                                             ^
+DETAIL:  Expected string or "}", but found "{".
+CONTEXT:  JSON data, line 1: {{...
+)
+ 
+[ 2017-05-04 20:13:08 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): RS-DBI driver: (could not Retrieve the result : ERROR:  invalid input syntax for type json
+LINE 1: ...AAA', 5, 23, 152.200000, '{{1, 2, 3},{2, 3, 4}}', '{{}}', 0)...
+                                                             ^
+DETAIL:  Expected string or "}", but found "{".
+CONTEXT:  JSON data, line 1: {{...
+)
+ 
+[ 2017-05-04 20:13:42 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): RS-DBI driver: (could not Retrieve the result : ERROR:  invalid input syntax for type json
+LINE 1: ...AAA', 5, 23, 152.200000, '{{1, 2, 3},{2, 3, 4}}', '{{}}', 0)...
+                                                             ^
+DETAIL:  Expected string or "}", but found "{".
+CONTEXT:  JSON data, line 1: {{...
+)
+ 
+[ 2017-05-04 20:14:47 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): RS-DBI driver: (could not Retrieve the result : ERROR:  malformed array literal: "{1, 2, 3},{2, 3, 4}"
+LINE 1: ...2, 'AAACACAACAAAAAACACAACAAA', 5, 23, 152.200000, '{1, 2, 3}...
+                                                             ^
+DETAIL:  Junk after closing right brace.
+)
+ 
+[ 2017-05-04 20:15:35 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): RS-DBI driver: (could not Retrieve the result : ERROR:  syntax error at or near "{"
+LINE 1: ...2, 'AAACACAACAAAAAACACAACAAA', 5, 23, 152.200000, {'{1, 2, 3...
+                                                             ^
+)
+ 
+[ 2017-05-04 22:03:55 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): RS-DBI driver: (could not Retrieve the result : ERROR:  syntax error at or near "{"
+LINE 18: bs_scoring_matrix = {{1, 2, 3},{2, 3, 4}}, 
+                             ^
+)
+ 
+[ 2017-05-04 22:06:07 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): RS-DBI driver: (could not Retrieve the result : ERROR:  syntax error at or near "{"
+LINE 1: ... = 23, bs_score = 152.200000, bs_scoring_matrix = {{1, 2, 3}...
+                                                             ^
+)
+ 
+[ 2017-05-04 22:07:39 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): RS-DBI driver: (could not Retrieve the result : ERROR:  invalid input syntax for type json
+LINE 1: ...ring_matrix = '{{1, 2, 3},{2, 3, 4}}', bs_other = '{{}}', bs...
+                                                             ^
+DETAIL:  Expected string or "}", but found "{".
+CONTEXT:  JSON data, line 1: {{...
+)
+ 
+[ 2017-05-05 10:19:27 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): RS-DBI driver: (could not Retrieve the result : ERROR:  invalid byte sequence for encoding "UTF8": 0xc0 0x6d
+)
+ 
+[ 2017-05-06 10:55:29 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): RS-DBI driver: (could not Retrieve the result : ERROR:  invalid byte sequence for encoding "UTF8": 0xa1
+)
+ 
+[ 2017-05-06 11:00:40 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): RS-DBI driver: (could not Retrieve the result : ERROR:  invalid byte sequence for encoding "UTF8": 0xb0
+)
+ 
+[ 2017-05-06 11:04:32 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): RS-DBI driver: (could not Retrieve the result : ERROR:  invalid byte sequence for encoding "UTF8": 0xa1
+)
+ 
+[ 2017-05-06 20:15:01 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): RS-DBI driver: (could not Retrieve the result : ERROR:  invalid byte sequence for encoding "UTF8": 0xa1
+)
+ 
+[ 2017-05-06 20:17:15 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): RS-DBI driver: (could not Retrieve the result : ERROR:  invalid byte sequence for encoding "UTF8": 0xa1
+)
+ 
+[ 2017-05-06 21:08:31 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): RS-DBI driver: (could not Retrieve the result : ERROR:  invalid byte sequence for encoding "UTF8": 0x80
+)
+ 
+[ 2017-05-08 10:47:19 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): RS-DBI driver: (could not Retrieve the result : ERROR:  syntax error at or near "x׀"
+LINE 1: x׀
+        ^
+)
+ 
+[ 2017-05-08 10:57:02 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): RS-DBI driver: (could not Retrieve the result : ERROR:  column "na" does not exist
+LINE 1: ...{8, 9, 10}}', bs_other = '{}', bs_type = 0 WHERE bs_id = NA;
+                                                                    ^
+)
+ 
+[ 2017-05-08 11:56:49 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): RS-DBI driver: (could not Retrieve the result : ERROR:  invalid input syntax for type json
+LINE 1: ...300000, feat_seed_pct = 5.100000, feat_seed_add = '{{"seed_k...
+                                                             ^
+DETAIL:  Expected string or "}", but found "{".
+CONTEXT:  JSON data, line 1: {{...
+)
+ 
