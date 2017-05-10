@@ -18,10 +18,10 @@ fluidPage(
   navbarPage("Predicciones miRNA",
              tabPanel("Inicio",
                       sidebarLayout(
-                        sidebarPanel(width=5, position="right",
+                        sidebarPanel(width = 5, position = "right",
                                      tags$h3("Predicción de targets miRNA"),
-                                     helpText("Plataforma web para la identificación de", tags$a('targets miRNA', href='https://en.wikipedia.org/wiki/MicroRNA', target='_blank')),
-                                     helpText("El código fuente está disponible en", tags$a('GitHub.', href='https://github.com/anikies/mirnaPlatformPredict', target='_blank'))
+                                     helpText("Plataforma web para la identificación de", tags$a('targets miRNA', href = 'https://en.wikipedia.org/wiki/MicroRNA', target='_blank')),
+                                     helpText("El código fuente está disponible en", tags$a('GitHub.', href = 'https://github.com/fbvarela/mirnaplatformpredict', target='_blank'))
                         ),
                         
                         mainPanel(width=8,
@@ -31,7 +31,7 @@ fluidPage(
              
              tabPanel("Búsquedas",
                       sidebarLayout(
-                        sidebarPanel(width=5, position="right",
+                        sidebarPanel(width = 5, position = "right",
                                      tags$h3("Búsquedas"),
                                      helpText("Consulta de información de la base de datos local"),
                                      actionButton("submit_release_mirna", "Datos release" ),
@@ -48,7 +48,7 @@ fluidPage(
              
              tabPanel("Nuevas predicciones",
                       sidebarLayout(
-                        sidebarPanel(width = 8, position="left",
+                        sidebarPanel(width = 8, position = "right",
                                      tags$div(id = "form_pred",
                                      tags$h3("Predicciones"),
                                      helpText("Formulario de entrada de datos para la predicción de targets miRNA"),
@@ -95,7 +95,7 @@ fluidPage(
                                            br(),
                                            br(),
 
-                                           radioButtons("radio_id_ref", label = "Base de datos referencia gen",
+                                           radioButtons("radio_id_ref", label = "Base de datos referencia",
                                                         choices = genes_id_aceptados, selected = "ensembl_gene_id")                                                 
                                             ),
 
@@ -114,7 +114,7 @@ fluidPage(
                                 DT::dataTableOutput("content"))
              ),
              
-             mainPanel("", width = 12,
+             mainPanel("", width = 8,
                        tags$div(textOutput('msg_info'), style="color:red"),
                        br(),
                        tags$b(helpText("Resultados")),

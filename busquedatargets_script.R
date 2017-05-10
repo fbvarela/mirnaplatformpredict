@@ -29,7 +29,7 @@ source('global.R')
       con <- ConectarBD()
       if (is.null(mensaje_error) == FALSE) { return(FALSE) }
       
-      datos <- ConsultarDatosBD(con_db = con, consulta_sql = SQL_SELECT_TARGETS)
+      datos <- ConsultarDatosBD(con_db = con, consulta_sql = SQL_SELECT_TARGETS_TODOS)
       if (is.null(mensaje_error) == FALSE) { shinyjs::enable("submit_results"); DesconectarBD(con_db = con); return(FALSE) }
       shinyjs::enable("submit_results")
       
@@ -53,8 +53,10 @@ source('global.R')
 #' Inserta datos de una release de targetScan en la base de datos (tabla datasets_ensembl).
 #' Primero borra la tabla, si existe, y luego hace la inserción.
 #' 
-#' @param archivo_zip character - Ruta del archivo con formato zip con los datos de la release (valor por defecto: ARCHIVO_ZIP_RELEASE_TARGETSCAN en archivo global.R)
-#' @param archivo_txt character - Ruta del archivo resultado de la descompresión del anterior (valor por defecto: ARCHIVO_TXT_RELEASE_TARGETSCAN en archivo global.R)
+#' @param archivo_zip character - Ruta del archivo con formato zip con los datos de la release 
+#' (valor por defecto: ARCHIVO_ZIP_RELEASE_TARGETSCAN en archivo global.R)
+#' @param archivo_txt character - Ruta del archivo resultado de la descompresión del anterior 
+#' (valor por defecto: ARCHIVO_TXT_RELEASE_TARGETSCAN en archivo global.R)
 #' 
 #' @return TRUE (éxito) | FALSE
 #'

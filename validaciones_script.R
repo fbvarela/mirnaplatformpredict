@@ -15,11 +15,9 @@
 
   ValidarTextGenID <- function(gen_id, tipo_ref = "ensembl_gene_id") 
     {
+      print("Entrando en ValidarTextGenID")
       #browser()    
       mensaje_error <<- NULL
-
-      print("Entrando en ValidarTextGenID")
-
       tryCatch(
         if (tipo_ref == "ensembl_gene_id")   # Validación para gen ID ensembl (que empiece por ENS: sólo se valida si hay uno)
           {   
@@ -36,7 +34,7 @@
           {
             for (i in 1 : length(gen_id))
               {
-                browser()
+                #browser()
                 if (gen_id[i] != "" && suppressWarnings(!is.na(as.integer(gen_id[i]))) == FALSE) # Comprueba si es un número entero
                   {
                     mensaje_error <<- msg_aviso_text_utr
@@ -48,8 +46,8 @@
           {
             for (i in 1 : length(gen_id))
               {
-                browser()
-                if (gen_id[i] != "" && regexpr('^[a-zA-Z]{2}\\.[0-9]+$', gen_id[i])[1] == FALSE) # 2 letras, un punto y el resto números enteros
+                #browser()
+                if (gen_id[i] != "" && regexpr('^[a-zA-Z]{2}\\.[0-9]+$', gen_id[i])[1] < 0) # 2 letras, un punto y el resto números enteros
                 {
                   mensaje_error <<- msg_aviso_text_utr
                   return(FALSE)

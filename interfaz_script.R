@@ -19,6 +19,7 @@
 #' precomp: integer
 #' 
 #' @param updateProgress función - barra de espera (valor por defecto: NULL)
+#' Código dentro de la función: if (is.function(updateProgress)) { text <- "miRNA ID -> seq miRNA"; updateProgress(detail = text) }
 #' 
 #' @return df_binding_sites_potenciales: data.frame - info de binding-sites potenciales
 #'
@@ -57,8 +58,8 @@
         
         ## Código de la función
         
-        warning = function(w) { print(paste("WARNING: ", w)); mensaje_aviso <<- msg_aviso_calculo_bs_potenciales; return(FALSE) }, 
-        error = function(e)   { print(paste("ERROR: ", e));   mensaje_error <<- msg_error_calculo_bs_potenciales; return(FALSE) }
+        warning = function(w) { print(paste("WARNING: ", w)); mensaje_aviso <<- msg_aviso_calculo_bs_potenciales; debug(logger, w); return(FALSE) }, 
+        error = function(e)   { print(paste("ERROR: ", e));   mensaje_error <<- msg_error_calculo_bs_potenciales; error(logger, e); return(FALSE) }
       )
       
       return(df_binding_sites_potenciales)
@@ -94,6 +95,7 @@
 #' bs_other - json (clave: valor)
 #' 
 #' @param updateProgress función - barra de espera (valor por defecto: NULL)
+#' Código dentro de la función: if (is.function(updateProgress)) { text <- "miRNA ID -> seq miRNA"; updateProgress(detail = text) }
 #' 
 #' @return df_features: data.frame - Datos de los features. 
 #' Importante: hay que incluir el ID de binding_sites (campo bs_id) pasado en el parámetro binding_sites_potenciales
@@ -140,8 +142,8 @@
         df_features <- data.frame(),
         ## Código de la función
 
-        warning = function(w) { print(paste("WARNING: ", w)); mensaje_aviso <<- msg_aviso_calculo_features; return(FALSE) }, 
-        error = function(e)   { print(paste("ERROR: ", e));   mensaje_error <<- msg_error_calculo_features; return(FALSE) }
+        warning = function(w) { print(paste("WARNING: ", w)); mensaje_aviso <<- msg_aviso_calculo_features; debug(logger, w); return(FALSE) }, 
+        error = function(e)   { print(paste("ERROR: ", e));   mensaje_error <<- msg_error_calculo_features; error(logger, e); return(FALSE) }
     )
     
     return(df_features)
@@ -177,7 +179,8 @@
 #' bs_other - json (clave: valor)
 #' 
 #' @param features data.frame - info de features asociados a los binding-sites
-#'
+#' Código dentro de la función: if (is.function(updateProgress)) { text <- "miRNA ID -> seq miRNA"; updateProgress(detail = text) }
+#' 
 #' Estructura de features
 #' bs_id - integer (binding_sites ID)
 #' feat_seed_type_id - integer
@@ -207,7 +210,8 @@
 #' 
 #' @param updateProgress función - barra de espera (valor por defecto: NULL)
 #' 
-#' @return data.frame - ID de binding-sites definitivos
+#' @return df_binding_sites_evaluados - integer vector - ID de binding-sites definitivos
+#' bs_id integer - ID de binding_site
 #'
 #' @examples EvaluarBindingSitesPotenciales (df_binding_sites, df_features, updateProgress)
 #' df_binding_sites <- data.frame(2, 13, "hsa-mir-181a-2", "ENST00000354071", "", 25, 4, 54, 65, "AAACACAACAAAACCAT", 2, 
@@ -234,13 +238,13 @@
   EvaluarBindingSitesPotenciales <- function(bs_potenciales, features, updateProgress = NULL)
     {
       tryCatch(  
-        df_binding_sites_evaluados <- data.frame(),
+        v_binding_sites_definitivos <- c(),   
         ## Código de la función
         
-        warning = function(w) { print(paste("WARNING: ", w)); mensaje_aviso <<- msg_aviso_evaluar_binding_sites; return(FALSE) }, 
-        error = function(e)   { print(paste("ERROR: ", e));   mensaje_error <<- msg_error_evaluar_binding_sites; return(FALSE) }
+        warning = function(w) { print(paste("WARNING: ", w)); mensaje_aviso <<- msg_aviso_evaluar_binding_sites; debug(logger, w); return(FALSE) }, 
+        error = function(e)   { print(paste("ERROR: ", e));   mensaje_error <<- msg_error_evaluar_binding_sites; error(logger, e); return(FALSE) }
     )
-    return(df_binding_sites_evaluados)
+    return(v_binding_sites_definitivos)
   }
   
   
@@ -273,17 +277,16 @@
 #' bs_other - json - clave - valor
 #' 
 #' @param updateProgress función - barra de espera (valor por defecto - NULL)
+#' Código dentro de la función: if (is.function(updateProgress)) { text <- "miRNA ID -> seq miRNA"; updateProgress(detail = text) } 
 #' 
 #' @return df_target - dataframe - Info de las predicciones
 #' Estructura de df_target
 #' mirna_id - character - miRNA ID
 #' utr_id - character - 3'UTR ID
 #' bs_id - integet- ID de binding-site definitivo
-#' score - numeric (6,2) - Puntuación
+#' score - numeric (6,2) - Puntuación para el binding site
 #' 
 #' @examples PrediccionFinalTargets(binding_sites_definitivos, updateProgress)
-#' 
-
 
   PrediccionFinalTargets <- function(binding_sites_definitivos, updateProgress = NULL)
     {
@@ -291,8 +294,8 @@
         df_target <- data.frame(stringsAsFactors = FALSE),
         ## Código de la función
         
-        warning = function(w) { print(paste("WARNING: ", w)); mensaje_aviso <<- msg_aviso_evaluar_binding_sites; return(FALSE) }, 
-        error = function(e)   { print(paste("ERROR: ", e));   mensaje_error <<- msg_error_evaluar_binding_sites; return(FALSE) }
+        warning = function(w) { print(paste("WARNING: ", w)); mensaje_aviso <<- msg_aviso_evaluar_binding_sites; debug(logger, w); return(FALSE) }, 
+        error = function(e)   { print(paste("ERROR: ", e));   mensaje_error <<- msg_error_evaluar_binding_sites; error(logger, e); return(FALSE) }
       )
         
       return(df_target)

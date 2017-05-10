@@ -225,9 +225,9 @@ if(!require(jsonlite)){
                 
                 df_mirna_id_seq$utr_ref <- references
             }
-            browser()
+            #browser()
             
-            names(df_mirna_id_seq) <- c("mirna_id", "mirna_seq", "mirna_ref")
+            colnames(df_mirna_id_seq) <- c("mirna_id", "mirna_seq", "mirna_ref")
         },
         
         df_mirna_id_seq <- rbind.data.frame(df_mirna_id_seq, df_mirna_id_seq_bd, stringsAsFactors = FALSE),
@@ -268,6 +268,12 @@ if(!require(jsonlite)){
       df_gen_utr_id_seq_bd <- data.frame(stringsAsFactors = FALSE)
       v_gen_id <- NULL
       v_gen_id_no_precomp <- NULL
+      
+      # Se crea el archivo donde se guardarán las secuencias descargadas
+      file.create(ruta_archivo_validas_API_fasta, showWarnings = TRUE)
+      
+      # Se borra el archivo para que no añada al resultado anterior
+      file.remove(ruta_archivo_validas_API_fasta)
       
       #browser()
       if (data_sel[1] == "Todos") data_sel <- data_sel[-1] # Se elimina "Todos" del vector de datasets
@@ -335,7 +341,6 @@ if(!require(jsonlite)){
                   ##browser()
                   #if (is.null(mensaje_error) == FALSE) return(df_gen_utr_id_seq <- NULL)
                   ##browser()
-                  
                   if (file.info(ruta_archivo_API_fasta)$size != 0)  # Se comprueba si el archivo contiene datos
                     {
                       tryCatch(
@@ -393,37 +398,34 @@ if(!require(jsonlite)){
                     references <- c(references, ifelse(nrow(df_ref) == 0, 0, 1))
                 }
                 df_gen_utr_id_seq$utr_ref <- references
-                colnames(df_gen_utr_id_seq_bd) <- c("gen_id", "utr_id", "utr_seq", "utr_ref")
+                
               }
+            
+            if (nrow(df_gen_utr_id_seq) != 0) colnames(df_gen_utr_id_seq) <- c("gen_id", "utr_id", "utr_seq", "utr_ref")
           }
-          #browser(),
+          #browser()
           
+          if (nrow(df_gen_utr_id_seq_bd) != 0) colnames(df_gen_utr_id_seq_bd) <- c("gen_id", "utr_id", "utr_seq", "utr_ref")
           df_gen_utr_id_seq <- rbind.data.frame(df_gen_utr_id_seq, df_gen_utr_id_seq_bd, stringsAsFactors = FALSE)
-          colnames(df_gen_utr_id_seq) <- c("gen_id", "utr_id", "utr_seq", "utr_ref")
+          
+          if (nrow(df_gen_utr_id_seq) != 0) colnames(df_gen_utr_id_seq) <- c("gen_id", "utr_id", "utr_seq", "utr_ref")
           df_gen_utr_id_seq <- arrange(df_gen_utr_id_seq, gen_id)
         
-       #     warning = function(w) { print(paste("WARNING: ", w));  mensaje_aviso <<- msg_aviso_recuperar_utr_bd; debug(logger, w); return(FALSE) },
-       #      error = function(e)   { print(paste("ERROR: ", e));    mensaje_error <<- msg_error_recuperar_utr_bd; error(logger, e); return(FALSE) }
-       #    )
       #browser()
       if (nrow(df_gen_utr_id_seq) == 0)  
         { 
           mensaje_error <<- msg_aviso_obtencion_utr_seq_no_result
           return (FALSE)
       }
-      
-      #browser()
 
-      # Se borra el archivo
-      file.remove(ruta_archivo_validas_API_fasta)
       print("Saliendo de buscar_extremo_3utr_seq")
-      
+      #browser()
       return (df_gen_utr_id_seq)
   }
   
   
 #' Función ClasificarIDReferencia(id, data_sel, tipo, updateProgress = NULL) 
-#' Comprueba si un mirna id o gen id de un archivo fasta es de referencia o nuevo
+#' Comprueba si un miRNA ID, gen ID o 3'UTR es de referencia o nuevo
 #' consultando las bases de datos de Biomart Ensembl
 #' 
 #' @param id character vector - mirna ID o 3'UTR ID 
@@ -535,7 +537,7 @@ if(!require(jsonlite)){
       if (is.null(mensaje_error) == FALSE) { return(FALSE) }
     
       v_mirna_id <- unique(sort(mirna_id))
-      browser()
+      #browser()
       consulta_sql <- sprintf(SQL_SELECT_MIRNA, mirna_id)
     
       data <- ConsultarDatosBD(con_db = con, consulta_sql = consulta_sql)

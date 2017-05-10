@@ -131,3 +131,236 @@ DETAIL:  Expected string or "}", but found "{".
 CONTEXT:  JSON data, line 1: {{...
 )
  
+[ 2017-05-08 18:36:06 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): RS-DBI driver: (could not Retrieve the result : ERROR:  syntax error at or near ";"
+LINE 1: ....3}', nextval('mirnaplatform.new_feature_id_seq'::regclass);
+                                                                      ^
+)
+ 
+[ 2017-05-08 18:50:23 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): RS-DBI driver: (could not Retrieve the result : ERROR:  invalid byte sequence for encoding "UTF8": 0xa0
+)
+ 
+[ 2017-05-08 18:53:01 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): RS-DBI driver: (could not Retrieve the result : ERROR:  invalid byte sequence for encoding "UTF8": 0xb6
+)
+ 
+[ 2017-05-08 18:59:09 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): RS-DBI driver: (could not Retrieve the result : ERROR:  syntax error at or near "x׀"
+LINE 1: x׀
+        ^
+)
+ 
+[ 2017-05-08 19:06:30 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): RS-DBI driver: (could not Retrieve the result : ERROR:  syntax error at or near "x׀"
+LINE 1: x׀
+        ^
+)
+ 
+[ 2017-05-08 20:48:28 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): RS-DBI driver: (could not Retrieve the result : ERROR:  invalid input syntax for integer: "87,88,89"
+LINE 1: ... FROM mirnaplatform.binding_sites WHERE bs_id IN ('87,88,89'...
+                                                             ^
+)
+ 
+[ 2017-05-08 21:08:24 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): RS-DBI driver: (could not Retrieve the result : ERROR:  syntax error at or near "83"
+LINE 1: ...ROM mirnaplatform.binding_sites WHERE bs_id IN (''83','87','...
+                                                             ^
+)
+ 
+[ 2017-05-08 21:28:11 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): RS-DBI driver: (could not Retrieve the result : ERROR:  syntax error at or near "93"
+LINE 1: ...ROM mirnaplatform.binding_sites WHERE bs_id IN (''93','94','...
+                                                             ^
+)
+ 
+[ 2017-05-08 21:31:37 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): RS-DBI driver: (could not Retrieve the result : ERROR:  invalid input syntax for integer: "97,98,99"
+LINE 1: ... FROM mirnaplatform.binding_sites WHERE bs_id IN ('97,98,99'...
+                                                             ^
+)
+ 
+[ 2017-05-08 21:47:54 ] ERROR Error in postgresqlgetResult(new.con): RS-DBI driver: (could not Retrieve the result : ERROR:  invalid input syntax for integer: ""
+CONTEXT:  COPY output_user, line 1, column output_id: ""
+)
+ 
+[ 2017-05-08 21:53:23 ] ERROR Error in postgresqlgetResult(new.con): RS-DBI driver: (could not Retrieve the result : ERROR:  invalid input syntax for integer: ""
+CONTEXT:  COPY output_user, line 1, column output_id: ""
+)
+ 
+[ 2017-05-08 21:55:04 ] ERROR Error in postgresqlgetResult(new.con): RS-DBI driver: (could not Retrieve the result : ERROR:  invalid input syntax for integer: ""
+CONTEXT:  COPY output_user, line 1, column output_id: ""
+)
+ 
+[ 2017-05-08 21:55:47 ] ERROR Error in postgresqlgetResult(new.con): RS-DBI driver: (could not Retrieve the result : ERROR:  invalid input syntax for integer: ""
+CONTEXT:  COPY output_user, line 1, column output_id: ""
+)
+ 
+[ 2017-05-08 22:05:38 ] ERROR Error in postgresqlgetResult(new.con): RS-DBI driver: (could not Retrieve the result : ERROR:  invalid input syntax for integer: "2017-05-08 22:05:04"
+CONTEXT:  COPY output_user, line 1, column output_id: "2017-05-08 22:05:04"
+)
+ 
+[ 2017-05-08 22:13:59 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): RS-DBI driver: (could not Retrieve the result : ERROR:  syntax error at end of input
+LINE 1: ...utput_target) VALUES (DEFAULT, '2017-05-08 22:11:37', NA, ''
+                                                                       ^
+)
+ 
+[ 2017-05-08 22:15:26 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): RS-DBI driver: (could not Retrieve the result : ERROR:  syntax error at end of input
+LINE 1: ...utput_target) VALUES (DEFAULT, '2017-05-08 22:11:37', NA, ''
+                                                                       ^
+)
+ 
+[ 2017-05-08 22:15:50 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): RS-DBI driver: (could not Retrieve the result : ERROR:  column "output_id" of relation "features" does not exist
+LINE 1: INSERT INTO mirnaplatform.features (output_id, output_dateti...
+                                            ^
+)
+ 
+[ 2017-05-08 22:16:42 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): RS-DBI driver: (could not Retrieve the result : ERROR:  column "na" does not exist
+LINE 1: ...tput_target) VALUES (DEFAULT, '2017-05-08 22:11:37', NA, '')
+                                                                ^
+)
+ 
+[ 2017-05-08 22:17:16 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): RS-DBI driver: (could not Retrieve the result : ERROR:  column "na" does not exist
+LINE 1: ...tput_target) VALUES (DEFAULT, '2017-05-08 22:11:37', NA, '')
+                                                                ^
+)
+ 
+[ 2017-05-08 22:17:41 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): RS-DBI driver: (could not Retrieve the result : ERROR:  invalid input syntax for type json
+LINE 1: ...put_target) VALUES (DEFAULT, '2017-05-08 22:11:37', 169, '')
+                                                                    ^
+DETAIL:  The input string ended unexpectedly.
+CONTEXT:  JSON data, line 1: 
+)
+ 
+[ 2017-05-09 12:26:51 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): RS-DBI driver: (could not Retrieve the result : ERROR:  syntax error at or near "SELECT"
+LINE 1: ... tm_id, tg_score) VALUES (DEFAULT, 'hsa-mir-510', SELECT utr...
+                                                             ^
+)
+ 
+[ 2017-05-09 12:32:31 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): RS-DBI driver: (could not Retrieve the result : ERROR:  syntax error at or near "SELECT"
+LINE 1: ... tm_id, tg_score) VALUES (DEFAULT, 'hsa-mir-510', SELECT utr...
+                                                             ^
+)
+ 
+[ 2017-05-09 12:33:19 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): RS-DBI driver: (could not Retrieve the result : ERROR:  syntax error at or near "SELECT"
+LINE 1: ... tm_id, tg_score) VALUES (DEFAULT, 'hsa-mir-510', SELECT utr...
+                                                             ^
+)
+ 
+[ 2017-05-09 12:37:16 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): RS-DBI driver: (could not Retrieve the result : ERROR:  syntax error at or near "SELECT"
+LINE 1: ... tm_id, tg_score) VALUES (DEFAULT, 'hsa-mir-510', SELECT utr...
+                                                             ^
+)
+ 
+[ 2017-05-09 12:39:42 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): RS-DBI driver: (could not Retrieve the result : ERROR:  insert or update on table "targets" violates foreign key constraint "tx_id"
+DETAIL:  Key (tm_id)=(0) is not present in table "text_mining".
+)
+ 
+[ 2017-05-09 12:41:08 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): expired PostgreSQLConnection
+ 
+[ 2017-05-09 12:42:51 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): RS-DBI driver: (could not Retrieve the result : ERROR:  syntax error at or near "x׀"
+LINE 1: x׀
+        ^
+)
+ 
+[ 2017-05-09 12:45:47 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): RS-DBI driver: (could not Retrieve the result : ERROR:  syntax error at or near "x׀"
+LINE 1: x׀
+        ^
+)
+ 
+[ 2017-05-09 12:48:18 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): RS-DBI driver: (could not Retrieve the result : ERROR:  invalid input syntax for type json
+LINE 1: ...get) VALUES (DEFAULT, '2017-05-09 12:46:36', 185, '"mirna_id...
+                                                             ^
+DETAIL:  Expected end of input, but found ":".
+CONTEXT:  JSON data, line 1: "mirna_id":...
+)
+ 
+[ 2017-05-09 12:50:59 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): RS-DBI driver: (could not Retrieve the result : ERROR:  invalid input syntax for type json
+LINE 1: ...get) VALUES (DEFAULT, '2017-05-09 12:50:18', 186, '{"mirna_i...
+                                                             ^
+DETAIL:  Expected "," or "}", but found ""mirna_id"".
+CONTEXT:  JSON data, line 1: ...rna_id": "hsa-mir-510", "target": [""] "mirna_id"...
+)
+ 
+[ 2017-05-09 12:54:56 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): RS-DBI driver: (could not Retrieve the result : ERROR:  invalid input syntax for type json
+LINE 1: ...get) VALUES (DEFAULT, '2017-05-09 12:52:13', 187, '{"mirna_i...
+                                                             ^
+DETAIL:  Expected "," or "}", but found ""mirna_id"".
+CONTEXT:  JSON data, line 1: ... "ENST00000380152", "ENST00000528762"] "mirna_id"...
+)
+ 
+[ 2017-05-09 12:57:51 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): RS-DBI driver: (could not Retrieve the result : ERROR:  invalid input syntax for type json
+LINE 1: ...get) VALUES (DEFAULT, '2017-05-09 12:55:57', 188, '{"mirna_i...
+                                                             ^
+DETAIL:  Expected "," or "}", but found ""mirna_id"".
+CONTEXT:  JSON data, line 1: ... "ENST00000380152", "ENST00000528762"] "mirna_id"...
+)
+ 
+[ 2017-05-09 17:08:39 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): RS-DBI driver: (could not Retrieve the result : ERROR:  column "tg_id" does not exist
+LINE 1: SELECT COUNT(tg_id) WHERE mirna_id = 'hsa-mir-510' AND utr_i...
+                     ^
+)
+ 
+[ 2017-05-09 17:11:46 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): RS-DBI driver: (could not Retrieve the result : ERROR:  column "tg_id" does not exist
+LINE 1: SELECT COUNT(tg_id) FROM mirnaplatform.features WHERE mirna_...
+                     ^
+)
+ 
+[ 2017-05-09 17:12:20 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): RS-DBI driver: (could not Retrieve the result : ERROR:  column "utr_id" does not exist
+LINE 1: ...atform.targets WHERE mirna_id = 'hsa-mir-510' AND utr_id = '...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "targets.tg_id" or the column "targets.tm_id".
+)
+ 
+[ 2017-05-09 17:16:22 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): RS-DBI driver: (could not Retrieve the result : ERROR:  argument of AND must be type boolean, not type text
+LINE 1: ...atform.targets WHERE mirna_id = 'hsa-mir-510' AND (SELECT ut...
+                                                             ^
+)
+ 
+[ 2017-05-09 17:27:53 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): RS-DBI driver: (could not Retrieve the result : ERROR:  syntax error at or near "SELECT"
+LINE 1: ...naplatform.targets SET mirna_id = 'hsa-mir-510', (SELECT utr...
+                                                             ^
+)
+ 
+[ 2017-05-09 17:28:56 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): RS-DBI driver: (could not Retrieve the result : ERROR:  syntax error at or near "SELECT"
+LINE 1: ...naplatform.targets SET mirna_id = 'hsa-mir-510', (SELECT utr...
+                                                             ^
+)
+ 
+[ 2017-05-09 19:09:08 ] ERROR Error in postgresqlQuickSQL(conn, statement, ...): expired PostgreSQLConnection
+ 
+[ 2017-05-09 19:10:42 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): expired PostgreSQLConnection
+ 
+[ 2017-05-09 19:11:57 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): expired PostgreSQLConnection
+ 
+[ 2017-05-09 19:45:11 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): RS-DBI driver: (could not Retrieve the result : ERROR:  insert or update on table "targets" violates foreign key constraint "tx_id"
+DETAIL:  Key (tm_id)=(1) is not present in table "text_mining".
+)
+ 
+[ 2017-05-09 19:50:11 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): RS-DBI driver: (could not Retrieve the result : ERROR:  insert or update on table "targets" violates foreign key constraint "tx_id"
+DETAIL:  Key (tm_id)=(1) is not present in table "text_mining".
+)
+ 
+[ 2017-05-09 19:52:08 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): RS-DBI driver: (could not Retrieve the result : ERROR:  insert or update on table "targets" violates foreign key constraint "tx_id"
+DETAIL:  Key (tm_id)=(1) is not present in table "text_mining".
+)
+ 
+[ 2017-05-09 19:55:43 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): RS-DBI driver: (could not Retrieve the result : ERROR:  insert or update on table "targets" violates foreign key constraint "tx_id"
+DETAIL:  Key (tm_id)=(1) is not present in table "text_mining".
+)
+ 
+[ 2017-05-09 19:56:18 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): RS-DBI driver: (could not Retrieve the result : ERROR:  insert or update on table "targets" violates foreign key constraint "tx_id"
+DETAIL:  Key (tm_id)=(1) is not present in table "text_mining".
+)
+ 
+[ 2017-05-09 22:47:05 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): RS-DBI driver: (could not Retrieve the result : ERROR:  insert or update on table "targets" violates foreign key constraint "tx_id"
+DETAIL:  Key (tm_id)=(1) is not present in table "text_mining".
+)
+ 
+[ 2017-05-09 22:48:27 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): RS-DBI driver: (could not Retrieve the result : ERROR:  insert or update on table "targets" violates foreign key constraint "tx_id"
+DETAIL:  Key (tm_id)=(1) is not present in table "text_mining".
+)
+ 
+[ 2017-05-09 23:15:12 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): RS-DBI driver: (could not Retrieve the result : ERROR:  invalid input syntax for type json
+LINE 1: ...200000, feat_seed_pct = 3.300000, feat_seed_add = '{seed: {"...
+                                                             ^
+DETAIL:  Token "seed" is invalid.
+CONTEXT:  JSON data, line 1: {seed...
+)
+ 
+[ 2017-05-09 23:19:43 ] ERROR Error in postgresqlExecStatement(conn, statement, ...): RS-DBI driver: (could not Retrieve the result : ERROR:  insert or update on table "targets" violates foreign key constraint "tx_id"
+DETAIL:  Key (tm_id)=(25) is not present in table "text_mining".
+)
+ 

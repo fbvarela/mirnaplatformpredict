@@ -13,105 +13,76 @@ ENSG00000139618,ENSG00000139620,
 ENSG00000012048,ENSG00000255386,
 ENSG00000104679,ENSG00000048991,
 ENSG00000121410,ENSG00000231882
-gen_utr_id
-ID del extremo 3'UTR
 
-gen_utr_ref
-¿Es una secuencia de referencia?
+1 hsa-mir-510 ENST00000470094   210  10.0
+2 hsa-mir-510 ENST00000380152   211  25.4
+3 hsa-mir-510 ENST00000528762   212   3.1
 
-gen_utr_seq
-Secuencia del extremo 3'UTR
+1 hsa-mir-510 ENST00000380152   211  25.4
+2 hsa-mir-510 ENST00000470094   210  10.0
+3 hsa-mir-510 ENST00000528762   212   3.1
 
-down vote
-In PostgreSQL 9.2 and above, to disconnect everything except your session from the database you are connected to:
-
-
-input_mirna_id
-
-gen_id
-
-input_utr_id
-
-input_user_id
-input_user_alg
-
-input_user_comment
-
-sudo kill -9 25505
-
-tm_gen_info
-tm_mirna_info
+1 hsa-mir-510 ENST00000380152   211  25.4
+2 hsa-mir-510 ENST00000470094   210  10.0
+3 hsa-mir-510 ENST00000528762   212   3.1
+dbClearResult(dbListResults(con)[[1]])
 
 
 
->ENSG00000012048|ENST00000352993
->ENSG00000012048|ENST00000354071
->ENSG00000012048|ENST00000478531
-Sequence unavailable
->ENSG00000012048|ENST00000476777
-Sequence unavailable
->ENSG00000012048|ENST00000461221
->ENSG00000012048|ENST00000471181
->ENSG00000012048|ENST00000357654
-º>ENSG00000012048|ENST00000470026
-Sequence unavailable
->ENSG00000012048|ENST00000468300
->ENSG00000012048|ENST00000461798
 
-mirna_info
-AGAAGGGCUAUCAGGCCAGCCUUCAGAGGACUCCAAGGAACAUUCAACGCUGUCGGUGAGUUUGGGAUUUGAAAAAACCACUGACCGUUGACUGUACCUUGGGGUCCUUA             0         1
-
-
-utr_info
-          gen_id          utr_id
-1 ENSG00000139618 ENST00000380152
-2 ENSG00000139618 ENST00000470094
-3 ENSG00000139618 ENST00000528762
-4 ENSG00000139618 ENST00000544455
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ... <truncated>
-1 GCATTTGCAAAGGCGACAATAAATTATTGACGCTTAACCTTTCCAGTTTATAAGACTGGAATATAATTTCAAACCACACATTAGTACTTATGTTGCACAATGAGAAAAGAAATTAGTTTCAAATTTACCTCAGCGTTTGTGTATCGGGCAAAAATCGTTTTGCCCGATTCCGTATTGGTATACTTTTGCTTCAGTTGCATATCTTAAAACTAAATGTAATTTATTAACTAATCAAGAAAAACATCTTTGGCTGAGCTCGGTGGCTCATGCCTGTAATCCCAACACTTTGAGAAGCTGAGGTGGGAGGAGTGCTTGAGGCCAGGAGTTCAAGACCAGCCTGGGCAACATAGGGAGACCCCCATCTTTACAAAGAAAAAAAAAAGGGGAAAAGAAAATCTTTTAAATCTTTGGATTTGATCACTACAAGTATTATTTTACAAGTGAAATAAACATACCATTTTCTTTTAGATTGTGTCATTAAATGGAATGAGGTCTCTTAGTACAGTTATTTTGATGCAGATAATTCCTTTTAGTTTAGCTACTATTTTAGGGGATTTTTTTTAGAGGTAACTCACTATGAAATAGTTCTCCTTAATGCAAATATGTTGGTTCTGCTATAGTTCCATCCTGTTCAAAAGTCAGGATGAATATGAAGAGTGGTGTTTCCTTTTGAGCAATTCTTCATCCTTAAGTCAGCATGATTATAAGAAAAATAGAACCCTCAGTGTAACTCTAATTCCTTTTTACTATTCCAGTGTGATCTCTGAAATTAAATTACTTCAACTAAAAATTCAAATACTTTAAATCAGAAGATTTCATAGTTAATTTATTTTTTTTTTCAACAAAATGGTCATCCAAACTCAAACTTGAGAAAATATCTTGCTTTCAAATTGGCACTGATTCTGCCTGCTTTATTTTTAGCGCTATCACAGGACCCAGAGCCTATGCCCTTTTAAACTTACCACAAAAGCAGAAGATTAATTCAATTTAAGATGATA... <truncated>
-2                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       ... <truncated>
-3                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       ... <truncated>
-4                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     GC... <truncated>
-  utr_precomp utr_ref
-1           0       1
-2           0       1
-3           0       1
-4           0       1
-
-
-binding_sites_precomp_bd
-bs_id       mirna_id          utr_id feat_id bs_mirna_seq_start bs_mirna_seq_end bs_utr_seq_start bs_utr_seq_end       bs_seq_seed bs_seq_seed_start bs_seq_seed_end bs_seq_region_3
-1    14 hsa-mir-181a-2 ENST00000528762       3                 12               25                4             54 AAACACAACAAAACCAT                NA              NA         AAACACA
-2    15 hsa-mir-181a-2 ENST00000528762       3                 12               25                4             54 AAACACAACAAAACCAT                NA              NA         AAACACA
-  bs_seq_region_3_start bs_seq_region_3_end      bs_seq_region_total bs_seq_region_total_start bs_seq_region_total_end bs_score bs_scoring_matrix bs_type bs_other
-1                    NA                  NA AAACACAACAAAAAACACAACAAA                        NA                      NA    152.2 {{1,2,3},{3,3,2}}       0     <NA>
-2                    NA                  NA AAACACAACAAAAAACACAACAAA                        NA                      NA    152.2 {{1,2,3},{3,3,2}}       0     <NA>
-
-
-mirna_utr_id_precomp
-  bs_id       mirna_id          utr_id precomp feat_id
-1  <NA> hsa-mir-181a-2 ENST00000380152       0    <NA>
-2  <NA> hsa-mir-181a-2 ENST00000470094       0    <NA>
-3    14 hsa-mir-181a-2 ENST00000528762       1       3
-4    15 hsa-mir-181a-2 ENST00000528762       1       3
-5  <NA> hsa-mir-181a-2 ENST00000544455       0    <NA>
+  bs_id    mirna_id          utr_id precomp feat_id bs_mirna_seq_start bs_seq_seed_end bs_seq_region_3 bs_seq_region_3_start bs_seq_region_3_end
+1   281 hsa-mir-510 ENST00000380152       1     333                 21               9      TAAATCTTTT                    10                  20
+2   285 hsa-mir-510 ENST00000380152       1     337                 21               9      TAAATCTTTT                    10                  20
+3   280 hsa-mir-510 ENST00000470094       1     332                 25               8      GATGACTTCA                     9                  19
+4   284 hsa-mir-510 ENST00000470094       1     336                 25               8      GATGACTTCA                     9                  19
+5   282 hsa-mir-510 ENST00000528762       1     334                 15              10      GCGTATTGTA                     3                  13
+6   286 hsa-mir-510 ENST00000528762       1     338                 15              10      GCGTATTGTA                     3                  13
+7   283 hsa-mir-510 ENST00000544455       1     335                  1              11      TTGCTTTCAA                     5                  15
+  bs_seq_region_total bs_seq_region_total bs_seq_region_total_end bs_score  bs_scoring_matrix bs_other bs_type
+1  AAAAAATTTAAATCTTTT                   2                      20     41.1 {{5,6,7},{8,9,10}}       {}       0
+2  AAAAAATTTAAATCTTTT                   2                      20     41.1 {{5,6,7},{8,9,10}}       {}       0
+3  AGTCTTGTGATGACTTCA                   1                      19       60  {{1,2,3},{2,3,4}}       {}       0
+4  AGTCTTGTGATGACTTCA                   1                      19       60  {{1,2,3},{2,3,4}}       {}       0
+5  AGCTATTCGCGTATTGTA                   3                      21       54  {{3,4,5},{6,7,8}}       {}       0
+6  AGCTATTCGCGTATTGTA                   3                      21       54  {{3,4,5},{6,7,8}}       {}       0
+7  TTGGCACTTTGCTTTCAA                   4                      22    152.2 {{1,3,5},{7,9,11}}       {}       0
 
 
 
-ENSG00000139618,
- ENSG00000139620,
-ENSG00000012048,
- ENSG00000255386,
- ENSG00000104679,
-ENSG00000048991,
- ENSG00000121410,
-ENSG00000231882
-
-ENSG00000104679
-ENSG00000121410 
-ENSG00000139620 
-ENSG00000255386
+ mirna_id          utr_id bs_mirna_seq_start bs_mirna_seq_end bs_utr_seq_start bs_utr_seq_end bs_seq_seed bs_seq_seed_start bs_seq_seed_end bs_seq_region_3
+1 hsa-mir-510 ENST00000470094                 25               34               54             65    AGTCTTGT                 1               8      GATGACTTCA
+2 hsa-mir-510 ENST00000380152                 21               29               30             41    AAAAAATT                 2               9      TAAATCTTTT
+3 hsa-mir-510 ENST00000528762                 15               24               10             21    AGCTATTC                 3              10      GCGTATTGTA
+4 hsa-mir-510 ENST00000544455                  1                9               11             20    TTGGCACT                 4              11      TTGCTTTCAA
+  bs_seq_region_3_start bs_seq_region_3_end bs_seq_region_total bs_seq_region_total_start bs_seq_region_total_end bs_score    bs_scoring_matrix bs_other bs_type
+1                     9                  19  AGTCTTGTGATGACTTCA                         1                      19       60  {1, 2, 3},{2, 3, 4}       {}       0
+2                    10                  20  AAAAAATTTAAATCTTTT                         2                      20     41.1 {5, 6, 7},{8, 9, 10}       {}       0
+3                     3                  13  AGCTATTCGCGTATTGTA                         3                      21       54  {3, 4, 5},{6, 7, 8}       {}       0
+4                     5                  15  TTGGCACTTTGCTTTCAA                         4                      22    152.2 {1, 3, 5},{7, 9, 11}       {}       0
 
 
-dbClearResult(dbListResults(conn)[[1]])
+  bs_id feat_seed_type_id feat_seed_score feat_seed_pct             feat_seed_add feat_cons_mf_id feat_cons_ms_id                        feat_cons_add
+1   284                15            23.2           3.3 {"seed": {"7mer-m8": 12}}               4               3        {"conservation": "conserved"}
+2   280                15              43           3.3 {"seed": {"7mer-m8": 23}}               4               3        {"conservation": "conserved"}
+3   285                15            34.1           3.3 {"seed": {"7mer-m8": 87}}               4               3        {"conservation": "conserved"}
+4   281                15           352.1           3.3 {"seed": {"7mer-m8": 32}}               4               3 {"conservation": "poorly conserved"}
+  feat_free_energy   feat_free_energy_add           feat_insite_fe_region           feat_insite_match_region        feat_insite_mismatch_region
+1             43.2 {"free_energy1": 23.2}  {"r3": 34.3, "r2": 2, "rt": 3}  {"r3": 332.3, "r2": 34, "rt": 21}    {"r3": 23.3, "r2": 43, "rt": 5}
+2             98.2 {"free_energy1": 45.2} {"r3": 54.8, "r2": 21, "rt": 2}   {"r3": 18.3, "r2": 34, "rt": 11} {"r3": 11.9, "r2": 333, "rt": 123}
+3              1.2 {"free_energy1": 89.1} {"r3": 40.2, "r2": 19, "rt": 3} {"r3": 52.2, "r2": 58, "rt": 21.2}    {"r3": 11, "r2": 23.2, "rt": 5}
+4             66.4   {"free_energy": 1.2}   {"r3": 2, "r2": 27, "rt": 14}  {"r3": 332.3, "r2": 29, "rt": 44}  {"r3": 3.5, "r2": 3.3, "rt": 5.2}
+       feat_insite_gc_match_region     feat_insite_gc_mismatch_region       feat_insite_au_match_region    feat_insite_au_mismatch_region
+1  {"r3": 43.3, "r2": 34, "rt": 4}   {"r3": 65.3, "r2": 1, "rt": 2.3}    {"r3": 3.3, "r2": 32, "rt": 0}  {"r3": 67.3, "r2": 6, "rt": 7.3}
+2 {"r3": 12.3, "r2": 31, "rt": 34}   {"r3": 35.2, "r2": 1, "rt": 1.2} {"r3": 8.8, "r2": 21, "rt": 23.3} {"r3": 31.3, "r2": 98, "rt": 8.1}
+3    {"r3": 62, "r2": 66, "rt": 4}    {"r3": 20, "r2": 97, "rt": 2.8}   {"r3": 79, "r2": 80.8, "rt": 0} {"r3": 59.2, "r2": 64, "rt": 7.3}
+4  {"r3": 34, "r2": 41, "rt": 374} {"r3": 65.3, "r2": 45, "rt": 15.3} {"r3": 1.2, "r2": 32.1, "rt": 22}    {"r3": 50, "r2": 43, "rt": 49}
+       feat_insite_gu_match_region      feat_insite_gu_mismatch_region   feat_insite_bulges_mirna_region      feat_insite_bulged_nucl_region
+1  {"r3": 4.3, "r2": 5, "rt": 5.3}   {"r3": 5.3, "r2": 34, "rt": 21.3} {"r3": 78.3, "r2": 34, "rt": 2.3} {"r3": 98.3, "r2": 7.8, "rt": 21.3}
+2 {"r3": 41.8, "r2": 5, "rt": 3.9} {"r3": 6.3, "r2": 23.1, "rt": 34.2}  {"r3": 61.3, "r2": 1, "rt": 3.3}  {"r3": 8.5, "r2": 7.8, "rt": 76.2}
+3 {"r3": 60.8, "r2": 8, "rt": 5.1}    {"r3": 100, "r2": 5, "rt": 21.3}   {"r3": 16, "r2": 12, "rt": 2.3}    {"r3": 71, "r2": 44, "rt": 21.3}
+4 {"r3": 4.3, "r2": 5, "rt": 18.2}   {"r3": 25.9, "r2": 34, "rt": 2.6}     {"r3": 7, "r2": 17, "rt": 13}   {"r3": 98.3, "r2": 4, "rt": 21.8}
+                       feat_insite_add feat_acc_energy              feat_ae_add
+1 {"r3": 332.3, "r2": 34.8, "rt": 6.3}            34.3 {"access_energy": 432.1}
+2  {"r3": 213.1, "r2": 38, "rt": 16.2}          232.34 {"access_energy": 150.8}
+3   {"r3": 5.2, "r2": 41.3, "rt": 6.3}            23.2 {"access_energy": 332.3}
+4   {"r3": 22.4, "r2": 3.7, "rt": 2.3}           145.2  {"access_energy": 12.7}

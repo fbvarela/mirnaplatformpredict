@@ -7,8 +7,7 @@ PrediccionTargets <- function(input, output, session)
   {
     ##browser()
     mensaje_error <<- "inicio"
-    
-    
+
     shinyjs::disable("submit_pred_target")
     
     # Carga de datasets en la lista desplegable
@@ -90,7 +89,6 @@ PrediccionTargets <- function(input, output, session)
           print("Selección de campos 1 y 2")
           df_input <- data.frame()
           #browser()
-        ##browser()
           if (ValidarTextGenID(gen_id = text_gen, tipo_ref = input$radio_id_ref)) # Valida gen ID
             {
               # Recuperación de secuencias mirRNA partir del miRNA ID
@@ -301,33 +299,28 @@ PrediccionTargets <- function(input, output, session)
       if (is.null(mensaje_error) == FALSE) { return(MostrarMensajeUsuario(mensaje)) } 
       
       df_binding_sites_precomp_bd <- ClasificarMirnaUtrPrecomputado(mirna_id = df_mirna_id_seq$mirna_id, 
-                                                             utr_id = df_gen_utr_id_seq$utr_id, 
-                                                             updateProgress = updateProgress)
-      browser()
+                                                                    utr_id = df_gen_utr_id_seq$utr_id, 
+                                                                    updateProgress = updateProgress)
+      #browser()
       if (is.null(mensaje_error) == FALSE) { return(MostrarMensajeUsuario(mensaje)) } 
-      browser()      
-      #df_binding_sites_precomp_bd <- RecuperarMirnaUtrPrecomputados(mirna_utr_precomp = df_mirna_utr_precomp)
-      
-      #browser()      
-      if (is.null(mensaje_error) == FALSE) { return(MostrarMensajeUsuario(mensaje)) } 
-      browser()
-      # input_user_id <- PrepararInputBD(mirna_input = df_mirna_id_seq, 
-      #                                  utr_input = df_gen_utr_id_seq, 
-      #                                  algoritmo = input$select_alg, 
-      #                                  updateProgress = updateProgress)
-      
+
+      #browser()
+      input_user_id <- PrepararInputBD(mirna_input = df_mirna_id_seq, 
+                                       utr_input = df_gen_utr_id_seq, 
+                                       algoritmo = input$select_alg, 
+                                       updateProgress = updateProgress)
 
       if (is.null(mensaje_error) == FALSE) { return(MostrarMensajeUsuario(mensaje)) } 
-      browser()
+      #browser()
        
-      EjecutarAlgoritmoPrediccion(mirna_info = df_mirna_id_seq,
-                                  utr_info = df_gen_utr_id_seq,
-                                  input_user_id = input_user_id,
-                                  tipo = input$radio_id_calc, 
-                                  binding_sites_precomp_bd = df_binding_sites_precomp_bd, 
-                                  updateProgress = updateProgress)
+      df_prediccion_final <- EjecutarAlgoritmoPrediccion(mirna_info = df_mirna_id_seq,
+                                                         utr_info = df_gen_utr_id_seq,
+                                                         input_user_id = input_user_id,
+                                                         tipo = input$radio_id_calc, 
+                                                         binding_sites_precomp_bd = df_binding_sites_precomp_bd, 
+                                                         updateProgress = updateProgress)
                                   
-      browser()
+      #browser()
       if (is.null(mensaje_error) == FALSE) 
         { 
           MostrarMensajeUsuario(mensaje_error)
@@ -337,8 +330,12 @@ PrediccionTargets <- function(input, output, session)
           output$msg_info <- renderPrint({
             shinyjs::enable("submit_pred_target"); 
             mensaje_error <<- NULL; 
-            return("Ejecutando...") 
-          }) 
+            return("") 
+          })
+          
+          output$content_pred <- DT::renderDataTable({
+            return(MostrarResultados(df_prediccion_final$tg_id))  
+          })
       }
   })
     
@@ -350,7 +347,8 @@ PrediccionTargets <- function(input, output, session)
  
 }
 
-#' Función ClasificarIDPrecomputado(df_id, tipo): clasifica ID mirna o 3'UTR en precomputado si | no
+#' Función ClasificarIDPrecomputado(df_id, tipo): 
+#' clasifica ID mirna o 3'UTR en precomputado si | no
 #'
 #' @param df_id data.frame - miRNA ID o 3'UTR ID
 #' @param tipo character - valores: "mirnaid" (miRNA ID) | otro (3'UTR ID)
@@ -378,7 +376,7 @@ PrediccionTargets <- function(input, output, session)
         # mirna ID
         if(tipo == "mirnaid")
           {
-            ##browser()
+            #browser()
             df_mirna_input_precomp <- NULL
             id <- df_id$mirna_id
             v_id <- sub(pattern="\\|.*", "", x = id)
@@ -440,7 +438,7 @@ PrediccionTargets <- function(input, output, session)
   }
 
 
-#' Función ClasificarMirnaUtrPrecomputado(mirna_id, utr_id, updateProgress: NULL) 
+#' Función ClasificarMirnaUtrPrecomputado(mirna_id, utr_id, updateProgress = NULL) 
 #' Comprueba si pares miRNA-3UTR tiene binding-sites precomputados (tabla binding_sites)
 #'
 #' @param mirna_id character vector - miRNA ID introducidos por el usuario
@@ -449,7 +447,7 @@ PrediccionTargets <- function(input, output, session)
 #' 
 #' @return data.frame - mirna_id, utr_id y precomp: 0 (no) | 1 (sí))
 #'
-#' @examples ComprobarMirnaUtrPrecomputado("hsa-mir-520b", "ENST00000352993")
+#' @examples ComprobarMirnaUtrPrecomputado("hsa-mir-520b", "ENST00000352993", updateProgress)
 
   ClasificarMirnaUtrPrecomputado <- function(mirna_id, utr_id, updateProgress = NULL)
     {
@@ -457,14 +455,10 @@ PrediccionTargets <- function(input, output, session)
       #browser()
       df_pares_precomputados <- data.frame(stringsAsFactors = FALSE)
       df_pares_mirna_utr <- expand.grid(mirna_id, utr_id, stringsAsFactors = FALSE)
-      names(df_pares_mirna_utr) <- c("mirna_id", "utr_id")
+      colnames(df_pares_mirna_utr) <- c("mirna_id", "utr_id")
       
-      tryCatch(
-        con <- ConectarBD(),
-        
-        warning = function(w) { print(paste("WARNING: ", w)); mensaje_error <<- msg_error_mirnautr_pre_computado; debug(logger, w); return(FALSE) }, 
-        error = function(e)   { print(paste("ERROR: ", e));   mensaje_error <<- msg_error_mirnautr_pre_computado; error(logger, e); return(FALSE) }
-      )
+      con <- ConectarBD()
+      if (is.null(mensaje_error) == FALSE) { DesconectarBD(con_db = con); return(FALSE) } 
       
       for (i in 1 : nrow(df_pares_mirna_utr))
         {
@@ -474,31 +468,37 @@ PrediccionTargets <- function(input, output, session)
           
           consulta_sql <- sprintf(SQL_SELECT_BINDINGSITES_PAR_MIRNAUTR_PRECOMP, df_pares_mirna_utr$mirna_id[i], df_pares_mirna_utr$utr_id[i])
           datos <- ConsultarDatosBD(con_db = con, consulta_sql = consulta_sql)
-          browser()
+          #browser()
           if (is.null(mensaje_error) == FALSE) { DesconectarBD(con_db = con); return(FALSE) } 
           
           ##browser()
           # Puede haber un par con más de un binding-site. Se guarda tb el bs_id de la tabla para diferenciarlos
           if (nrow(datos) > 0)
             {
-              browser()
+              #browser()
               for (j in 1 : nrow(datos))
                 {
                   v_pares <- c(datos$bs_id[j], df_pares_mirna_utr$mirna_id[i], df_pares_mirna_utr$utr_id[i], 1, 
                                ifelse(is.null(datos$feat_id[j]), NA, datos$feat_id[j]), datos$bs_mirna_seq_start[j], 
-                               datos$bs_seq_seed_end[j], datos$bs_seq_region_3[j], datos$bs_seq_region_3_start[j], 
-                               datos$bs_seq_region_3_end[j], datos$bs_seq_region_total[j], datos$bs_seq_region_total_start[j], 
-                               datos$bs_seq_region_total_end[j], datos$bs_score[j], datos$bs_scoring_matrix[j], datos$bs_other[j], 
-                               datos$bs_type[j])
-                               
-                               
+                               datos$bs_mirna_seq_start[j], datos$bs_mirna_seq_end[j], datos$bs_utr_seq_start[j],
+                               datos$bs_utr_seq_end[j], datos$bs_seq_seed_start[j], datos$bs_seq_seed_end[j], 
+                               datos$bs_seq_region_3[j], datos$bs_seq_region_3_start[j], datos$bs_seq_region_3_end[j], 
+                               datos$bs_seq_region_total[j], datos$bs_seq_region_total[j], datos$bs_seq_region_total_end[j], 
+                               datos$bs_score[j], datos$bs_scoring_matrix[j], datos$bs_other[j], datos$bs_type[j])
+
                   df_pares_precomputados <- rbind.data.frame(df_pares_precomputados, v_pares, stringsAsFactors = FALSE)
               }  
+            
+            colnames(df_pares_precomputados) <- c("bs_id", "mirna_id", "utr_id", "precomp", "feat_id", "bs_mirna_seq_start",
+                                                  "bs_mirna_seq_end", "bs_utr_seq_start", "bs_seq_seed_end", "bs_seq_region_3", 
+                                                  "bs_seq_region_3_start","bs_seq_region_3_end", "bs_seq_region_total", 
+                                                  "bs_seq_region_total", "bs_seq_region_total_end", "bs_score", 
+                                                  "bs_scoring_matrix", "bs_other", "bs_type")
           }
       }
       
       DesconectarBD(con_db = con)
-      browser()
+      #browser()
       #names(df_pares_precomputados) <- c("bs_id", "mirna_id", "utr_id", "precomp", "feat_id")
       
       print("Saliendo de ClasificarMirnaUtrPrecomputado")
@@ -514,7 +514,7 @@ PrediccionTargets <- function(input, output, session)
 #'
 #' @examples RecuperarMirnaUtrPrecomputados(data.frame(mirna_id = "hsa-mir-200", utr_id = "ENST00000352993", precomp = 1"))
 
-RecuperarMirnaUtrPrecomputados <- function(mirna_utr_precomp)
+  RecuperarMirnaUtrPrecomputados <- function(mirna_utr_precomp)
     {
       print("Entrando en RecuperarMirnaUtrPrecomputados")
       mensaje_error <<- NULL
@@ -537,7 +537,7 @@ RecuperarMirnaUtrPrecomputados <- function(mirna_utr_precomp)
               )
             
               # Se consulta si el par miRNA-3'UTR está en binding_sites
-              consulta_sql <- sprintf(SQL_SELECT_BINDINGSITES_PAR_MIRNAUTR_INPUT, mirna_utr_precomp$mirna_id[i], mirna_utr_precomp$utr_id[i], as.numeric(mirna_utr_precomp$bs_id[i]))
+              consulta_sql <- sprintf(SQL_SELECT_BINDINGSITES_PAR_MIRNAUTR_INPUT, mirna_utr_precomp$mirna_id[i], mirna_utr_precomp$utr_id[i], as.double(mirna_utr_precomp$bs_id[i]))
               data <- ConsultarDatosBD (con_db = con, consulta_sql = consulta_sql)
               ##browser()
               
@@ -631,10 +631,10 @@ RecuperarMirnaUtrPrecomputados <- function(mirna_utr_precomp)
           ##browser()
           if(data$count == 0)
             {
-              consulta_sql <- sprintf(SQL_INSERT_MIRNA, mirna_input$mirna_id[i], 1, mirna_input$mirna_precomp[i], mirna_input$mirna_seq[i]) 
+              consulta_sql <- sprintf(SQL_INSERT_MIRNA, mirna_input$mirna_id[i], mirna_input$mirna_ref[i], mirna_input$mirna_precomp[i], mirna_input$mirna_seq[i]) 
           }else
             {
-              consulta_sql <- sprintf(SQL_UPDATE_MIRNA, 1, mirna_input$mirna_precomp[i], mirna_input$mirna_seq[i], mirna_input$mirna_id[i]) 
+              consulta_sql <- sprintf(SQL_UPDATE_MIRNA, mirna_input$mirna_ref[i], mirna_input$mirna_precomp[i], mirna_input$mirna_seq[i], mirna_input$mirna_id[i]) 
           }
           
           
@@ -645,7 +645,7 @@ RecuperarMirnaUtrPrecomputados <- function(mirna_utr_precomp)
       if (is.null(mensaje_error) == FALSE) { dbRollback(conn = con); DesconectarBD(con_db = con); return(FALSE) }
       
       # TABLA gen
-      browser()
+      #browser()
       v_gen_unicos <- unique(utr_input$gen_id)
       for (i in 1 : length(v_gen_unicos))
         {
@@ -660,15 +660,14 @@ RecuperarMirnaUtrPrecomputados <- function(mirna_utr_precomp)
             {
               consulta_sql <- sprintf(SQL_UPDATE_GEN, v_gen_unicos[i], "", v_gen_unicos[i]) 
           }
-          
-          
+
           EjecutarConsultaBD(con_db = con, consulta_sql = consulta_sql)  
           if (is.null(mensaje_error) == FALSE) { dbRollback(conn = con); DesconectarBD(con_db = con); return(FALSE) }
       }
       
       if (is.null(mensaje_error) == FALSE) { dbRollback(conn = con); DesconectarBD(con_db = con); return(FALSE) }
       
-      browser()
+      #browser()
       
       # TABLA utr_gen
       for (i in 1 : nrow(utr_input))
@@ -680,10 +679,10 @@ RecuperarMirnaUtrPrecomputados <- function(mirna_utr_precomp)
           if (is.null(mensaje_error) == FALSE) { DesconectarBD(con_db = con); return(FALSE) }
           if(data$count == 0)
             {
-              consulta_sql <- sprintf(SQL_INSERT_UTR, utr_input$utr_id[i], 1, utr_input$utr_precomp[i], utr_input$utr_seq[i], utr_input$gen_id[i]) 
+              consulta_sql <- sprintf(SQL_INSERT_UTR, utr_input$utr_id[i], utr_input$utr_ref[i], utr_input$utr_precomp[i], utr_input$utr_seq[i], utr_input$gen_id[i]) 
           }else
             {
-              consulta_sql <- sprintf(SQL_UPDATE_UTR, 1, utr_input$utr_precomp[i], utr_input$utr_seq[i], utr_input$gen_id[i], utr_input$utr_id[i]) 
+              consulta_sql <- sprintf(SQL_UPDATE_UTR, utr_input$utr_ref[i], utr_input$utr_precomp[i], utr_input$utr_seq[i], utr_input$gen_id[i], utr_input$utr_id[i]) 
           }
           
           
@@ -726,24 +725,23 @@ RecuperarMirnaUtrPrecomputados <- function(mirna_utr_precomp)
 #' @param input_id integer - valor de ID de input_user (ver esquema de base de datos)
 #' @param binding_sites_precomp_bd data.frame - info de pares miRNA-3'UTR precomputados
 #' @param mirna_utr_id_precomp data.frame - ID de pares miRNA-3'UTR precomputados
-#' @param tipo character - indica si se calcula todo de nuevo o se utilice info de la base de datos - valores ("calc_todo" | "calc_parte")(valor por defecto: "calc_todo")
+#' @param tipo character - indica si se calcula todo de nuevo o se utilice info de la base de datos - valores ("calc_todo" | "calc_parte") - Valor por defecto: "calc_todo"
 #' @param updateProgress función - barra de espera (valor por defecto: NULL)
 #' 
-#' @return
+#' @return df_targets - data.frame - 
 #'
 #' @examples EjecutarAlgoritmoPrediccion
 
-  EjecutarAlgoritmoPrediccion <- function(mirna_info, utr_info, input_user_id, binding_sites_precomp_bd, mirna_utr_id_precomp = NULL, 
+  EjecutarAlgoritmoPrediccion <- function(mirna_info, utr_info, input_user_id, binding_sites_precomp_bd, 
                                           tipo = "calc_todo", updateProgress = NULL)
-  #EjecutarAlgoritmoPrediccion <- function(mirna_info, utr_info, tipo = "calc_todo", updateProgress = NULL)
     {
       #browser()
       consulta_sql <- NULL
       
       #### 1. Identificación de binding-sites potenciales
       df_binding_sites_potenciales <- data.frame(stringsAsFactors = FALSE)
-      
-      browser()
+      v_bs_id <- c()
+      #browser()
       if (tipo == "calc_todo")   # Se recalcula todo
         {
           df_binding_sites_potenciales <- IdentificarBindingSitesPotenciales(mirna_info = mirna_info, 
@@ -759,23 +757,23 @@ RecuperarMirnaUtrPrecomputados <- function(mirna_utr_precomp)
           
       }
       
-      df_binding_sites_potenciales <- data.frame("hsa-mir-510", "ENST00000470094", 25, 4, 54, 65, "AGTCTTGT", 1, 8, "GATGACTTCA", 
+      ## CASO DE PRUEBA
+      df_binding_sites_potenciales <- data.frame("hsa-mir-510", "ENST00000470094", 25, 34, 54, 65, "AGTCTTGT", 1, 8, "GATGACTTCA", 
                                                  9, 19, "AGTCTTGTGATGACTTCA", 1, 19, 60, "{1, 2, 3},{2, 3, 4}", "{}", 0, stringsAsFactors = FALSE)
       
-      df_binding_sites_potenciales <- rbind.data.frame(df_binding_sites_potenciales, c("hsa-mir-510", "ENST00000380152", 25, 4, 54, 65, "AAAAAATT", 1, 8, "TAAATCTTTT", 
-                                                        9, 19,  "AAAAAATTTAAATCTTTT", 1, 19, 41.1, "{5, 6, 7},{8, 9, 10}", "{}", 0), stringsAsFactors = FALSE)
-      df_binding_sites_potenciales <- rbind.data.frame(df_binding_sites_potenciales, c("hsa-mir-510", "ENST00000528762", 25, 4, 54, 65, "AGCTATTC", 1, 8, "GCGTATTGTA", 
-                                                       3, 32,  "AGCTATTCGCGTATTGTA", 1, 19, 54, "{3, 4, 5},{6, 7, 8}", "{}", 0), stringsAsFactors = FALSE)
+      df_binding_sites_potenciales <- rbind.data.frame(df_binding_sites_potenciales, c("hsa-mir-510", "ENST00000380152", 21, 29, 30, 41, "AAAAAATT", 2, 9, "TAAATCTTTT", 
+                                                        10, 20,  "AAAAAATTTAAATCTTTT", 2, 20, 41.1, "{5, 6, 7},{8, 9, 10}", "{}", 0), stringsAsFactors = FALSE)
+      df_binding_sites_potenciales <- rbind.data.frame(df_binding_sites_potenciales, c("hsa-mir-510", "ENST00000528762", 15, 24, 10, 21, "AGCTATTC", 3, 10, "GCGTATTGTA", 
+                                                       3, 13,  "AGCTATTCGCGTATTGTA", 3, 21, 54, "{3, 4, 5},{6, 7, 8}", "{}", 0), stringsAsFactors = FALSE)
                                                  
-      df_binding_sites_potenciales <- rbind.data.frame(df_binding_sites_potenciales, c("hsa-mir-510", "ENST00000544455", 25, 4, 54, 65, "TTGGCACT", 1, 8, "TTGCTTTCAA", 
-                                                       3, 32,  "TTGGCACTTTGCTTTCAA", 1, 19, 152.2, "{1, 3, 5},{7, 9, 11}", "{}", 0), stringsAsFactors = FALSE) 
-       
-       
-       names(df_binding_sites_potenciales) <- c("mirna_id", "utr_id", "bs_mirna_seq_start", "bs_mirna_seq_end", "bs_utr_seq_start", 
+      df_binding_sites_potenciales <- rbind.data.frame(df_binding_sites_potenciales, c("hsa-mir-510", "ENST00000544455", 10, 9, 11, 20, "TTGGCACT", 4, 11, "TTGCTTTCAA", 
+                                                       5, 15,  "TTGGCACTTTGCTTTCAA", 4, 22, 152.2, "{1, 3, 5},{7, 9, 11}", "{}", 0), stringsAsFactors = FALSE) 
+      
+       colnames(df_binding_sites_potenciales) <- c("mirna_id", "utr_id", "bs_mirna_seq_start", "bs_mirna_seq_end", "bs_utr_seq_start", 
                                                 "bs_utr_seq_end", "bs_seq_seed", "bs_seq_seed_start", "bs_seq_seed_end", "bs_seq_region_3", 
                                                 "bs_seq_region_3_start", "bs_seq_region_3_end", "bs_seq_region_total", "bs_seq_region_total_start", 
                                                 "bs_seq_region_total_end", "bs_score", "bs_scoring_matrix", "bs_other", "bs_type")
-       
+       ##################
        
       if (is.null(mensaje_error) == FALSE) { return(FALSE) }
       
@@ -783,7 +781,7 @@ RecuperarMirnaUtrPrecomputados <- function(mirna_utr_precomp)
       if (nrow(df_binding_sites_potenciales) == 0)
         {
             mensaje_error <<- msg_aviso_bs_potenciales_vacio
-            return (FALSE)
+            return(FALSE)
       }else
         {
           con <- ConectarBD()
@@ -800,11 +798,8 @@ RecuperarMirnaUtrPrecomputados <- function(mirna_utr_precomp)
           for(i in 1 : nrow(df_binding_sites_potenciales))
             {
               if (is.function(updateProgress)) { text <- "Identificando binding-sites potenciales"; updateProgress(detail = text) }
-              browser()
-            c("mirna_id", "utr_id", "bs_mirna_seq_start", "bs_mirna_seq_end", "bs_utr_seq_start", 
-              "bs_utr_seq_end", "bs_seq_seed", "bs_seq_seed_start", "bs_seq_seed_end", "bs_seq_region_3", 
-              "bs_seq_region_3_start", "bs_seq_region_3_end", "bs_seq_region_total", "bs_seq_region_total_start", 
-              "bs_seq_region_total_end", "bs_score", "bs_scoring_matrix", "bs_other", "bs_type")
+              #browser()
+
               consulta_sql <- sprintf(SQL_SELECT_BS_ID_POTENCIALES, 
                                       df_binding_sites_potenciales$mirna_id[i], 
                                       df_binding_sites_potenciales$utr_id[i], 
@@ -821,17 +816,19 @@ RecuperarMirnaUtrPrecomputados <- function(mirna_utr_precomp)
                                       df_binding_sites_potenciales$bs_seq_region_total[i],  
                                       as.integer(df_binding_sites_potenciales$bs_seq_region_total_start[i]),
                                       as.integer(df_binding_sites_potenciales$bs_seq_region_total_end[i]), 
-                                      as.numeric(df_binding_sites_potenciales$bs_score[i]),
+                                      as.double(df_binding_sites_potenciales$bs_score[i]),
                                       df_binding_sites_potenciales$bs_scoring_matrix[i], 
                                       df_binding_sites_potenciales$bs_other[i],
-                                      as.integer(df_binding_sites_potenciales$bs_type[i]))
+                                      #as.integer(df_binding_sites_potenciales$bs_type[i])
+                                      0)
+                                      
               
               data <- ConsultarDatosBD(con_db = con, consulta_sql = consulta_sql)
               if (is.null(mensaje_error) == FALSE) { dbRollback(conn = con); DesconectarBD(con_db = con); return(FALSE) }
-              
+              #browser()
               if(nrow(data) == 0) # Si es nuevo se inserta
                 {
-                  browser()
+                  #browser()
                   consulta_sql <- sprintf(SQL_INSERT_BINDING_SITES_POTENCIALES,
                                           df_binding_sites_potenciales$mirna_id[i], 
                                           df_binding_sites_potenciales$utr_id[i],
@@ -849,10 +846,11 @@ RecuperarMirnaUtrPrecomputados <- function(mirna_utr_precomp)
                                           df_binding_sites_potenciales$bs_seq_region_total[i], 
                                           as.integer(df_binding_sites_potenciales$bs_seq_region_total_start[i]),
                                           as.integer(df_binding_sites_potenciales$bs_seq_region_total_end[i]), 
-                                          as.numeric(df_binding_sites_potenciales$bs_score[i]),
+                                          as.double(df_binding_sites_potenciales$bs_score[i]),
                                           df_binding_sites_potenciales$bs_scoring_matrix[i],
                                           df_binding_sites_potenciales$bs_other[i],
-                                          as.integer(df_binding_sites_potenciales$bs_type[i]))
+                                          #as.integer(df_binding_sites_potenciales$bs_type[i]))
+                                          0)
               }else    
                 {
                   #browser()
@@ -872,71 +870,97 @@ RecuperarMirnaUtrPrecomputados <- function(mirna_utr_precomp)
                                           df_binding_sites_potenciales$bs_seq_region_total[i], 
                                           as.integer(df_binding_sites_potenciales$bs_seq_region_total_start[i]), 
                                           as.integer(df_binding_sites_potenciales$bs_seq_region_total_end[i]), 
-                                          as.numeric(df_binding_sites_potenciales$bs_score[i]), 
+                                          as.double(df_binding_sites_potenciales$bs_score[i]), 
                                           df_binding_sites_potenciales$bs_scoring_matrix[i], 
                                           df_binding_sites_potenciales$bs_other[i],
-                                          as.integer(df_binding_sites_potenciales$bs_type[i]),
+                                          #as.integer(df_binding_sites_potenciales$bs_type[i]),
+                                          0,
                                           as.integer(data$bs_id))
               }
               #browser()
               EjecutarConsultaBD(con_db = con, consulta_sql = consulta_sql)
               if (is.null(mensaje_error) == FALSE) { dbRollback(conn = con); DesconectarBD(con_db = con); return(FALSE) }
+              
+              # Se guardan los bs_id para el paso siguiente (esto es sólo para que funcione el ejemplo. En real se elimina)
+              consulta_sql <- sprintf(SQL_SELECT_BS_ID_POTENCIALES, 
+                                      df_binding_sites_potenciales$mirna_id[i], 
+                                      df_binding_sites_potenciales$utr_id[i], 
+                                      as.integer(df_binding_sites_potenciales$bs_mirna_seq_start[i]), 
+                                      as.integer(df_binding_sites_potenciales$bs_mirna_seq_end[i]),
+                                      as.integer(df_binding_sites_potenciales$bs_utr_seq_start[i]),  
+                                      as.integer(df_binding_sites_potenciales$bs_utr_seq_end[i]),
+                                      df_binding_sites_potenciales$bs_seq_seed[i], 
+                                      as.integer(df_binding_sites_potenciales$bs_seq_seed_start[i]),
+                                      as.integer(df_binding_sites_potenciales$bs_seq_seed_end[i]), 
+                                      df_binding_sites_potenciales$bs_seq_region_3[i],
+                                      as.integer(df_binding_sites_potenciales$bs_seq_region_3_start[i]), 
+                                      as.integer(df_binding_sites_potenciales$bs_seq_region_3_end[i]),
+                                      df_binding_sites_potenciales$bs_seq_region_total[i],  
+                                      as.integer(df_binding_sites_potenciales$bs_seq_region_total_start[i]),
+                                      as.integer(df_binding_sites_potenciales$bs_seq_region_total_end[i]), 
+                                      as.double(df_binding_sites_potenciales$bs_score[i]),
+                                      df_binding_sites_potenciales$bs_scoring_matrix[i], 
+                                      df_binding_sites_potenciales$bs_other[i],
+                                      #as.integer(df_binding_sites_potenciales$bs_type[i]))
+                                      0)
+              
+              datos <- ConsultarDatosBD(con_db = con, consulta_sql = consulta_sql)
+              if (is.null(mensaje_error) == FALSE) { dbRollback(conn = con); DesconectarBD(con_db = con); return(FALSE) }
+              if (nrow(datos) != 0) {
+                  v_bs_id <- c(v_bs_id, datos$bs_id)
+              }
+              #browser()
           }
           
-            dbCommit(conn = con)  # Se hace el commit            
-            DesconectarBD(con_db = con) # Se cierra la conexión
-            
-            # if (tipo == "calc_todo")
-            #   {
-            #     # Se añaden los binding-sites precomputados
-            #     df_binding_sites_potenciales <- rbind.data.frame(df_binding_sites_potenciales, binding_sites_precomp_bd, stringsAsFactors = FALSE)
-            # }
-  
+          dbCommit(conn = con)  # Se hace el commit            
+          DesconectarBD(con_db = con) # Se cierra la conexión
         }
       
       if (is.null(mensaje_error) == FALSE) { return(FALSE) } 
        
-      browser()  
+      #browser()  
       #### 2. Obtención de features
       
       df_features <- ObtenerFeatures(binding_sites_potenciales = df_binding_sites_potenciales)
       if (is.null(mensaje_error) == FALSE) { return(FALSE) }
-      
-      df_features <- data.frame(27, 15, 128.3, 5.1, '{"seed_k": 23}', 4, 1, '{"cons_x": "conservationx"}', 58.3, '{"free_energy_x": 332.3}', 
-                                '{"r3": 332.3, "r2": 34, "rt": 21.3}', '{"r3": 23.3, "r2": 43, "rt": 5.3}', '{"r3": 43.3, "r2": 34, "rt": 4.3}', 
-                                '{"r3": 65.3, "r2": 1, "rt": 2.3}','{"r3": 3.3, "r2": 32, "rt": 0.3}', '{"r3": 67.3, "r2": 6, "rt": 7.3}', 
-                                '{"r3": 4.3, "r2": 5, "rt": 5.3}', '{"r3": 5.3, "r2": 34, "rt": 21.3}', '{"r3": 78.3, "r2": 34, "rt": 2.3}', 
-                                '{"r3": 98.3, "r2": 7.8, "rt": 21.3}', '{"r3": 332.3, "r2": 34.8, "rt": 6.3}', '{}', 2, '{}', 
-                                 "", stringsAsFactors = FALSE);
+      #browser()
+      ## CASO DE PRUEBA
+      df_features <- data.frame(v_bs_id[1], 15, 23.2, 3.3, '{"seed": {"7mer-m8": 12}}', 4, 3,'{"conservation": "conserved"}', 43.2, '{"free_energy1": 23.2}', 
+                                '{"r3": 34.3, "r2": 2, "rt": 3}', '{"r3": 332.3, "r2": 34, "rt": 21}', '{"r3": 23.3, "r2": 43, "rt": 5}', 
+                                '{"r3": 43.3, "r2": 34, "rt": 4}', '{"r3": 65.3, "r2": 1, "rt": 2.3}', '{"r3": 3.3, "r2": 32, "rt": 0}', 
+                                '{"r3": 67.3, "r2": 6, "rt": 7.3}', '{"r3": 4.3, "r2": 5, "rt": 5.3}', '{"r3": 5.3, "r2": 34, "rt": 21.3}', 
+                                '{"r3": 78.3, "r2": 34, "rt": 2.3}', '{"r3": 98.3, "r2": 7.8, "rt": 21.3}', '{"r3": 332.3, "r2": 34.8, "rt": 6.3}', 
+                                34.3, '{"access_energy": 432.1}', stringsAsFactors = FALSE)
 
-      df_features <- rbind.data.frame(df_features, c(28, 15, 128.3, 54.2, '{"seed_k": 23}', 4, 1, '{"cons_x": "conservationx"}', 35.2, '{"free_energy_x": 332.3}', 
-                                        '{"r3": 332.3, "r2": 34, "rt": 21.3}', '{"r3": 23.3, "r2": 43, "rt": 5.3}', '{"r3": 43.3, "r2": 34, "rt": 4.3}', 
-                                        '{"r3": 65.3, "r2": 1, "rt": 2.3}', '{"r3": 3.3, "r2": 32, "rt": 0.3}', '{"r3": 67.3, "r2": 6, "rt": 7.3}', 
-                                        '{"r3": 4.3, "r2": 5, "rt": 5.3}', '{"r3": 5.3, "r2": 34, "rt": 21.3}', '{"r3": 78.3, "r2": 34, "rt": 2.3}', 
-                                        '{"r3": 98.3, "r2": 7.8, "rt": 21.3}', '{"r3": 332.3, "r2": 34.8, "rt": 6.3}', '{}', 4, '{}', 
-                                         ""), stringsAsFactors = FALSE)
+      df_features <- rbind.data.frame(df_features, c(v_bs_id[2], 15, 43.0, 1.5, '{"seed": {"7mer-m8": 23}}', 4, 3,'{"conservation": "conserved"}', 98.2, '{"free_energy1": 45.2}', 
+                                                     '{"r3": 54.8, "r2": 21, "rt": 2}', '{"r3": 18.3, "r2": 34, "rt": 11}', '{"r3": 11.9, "r2": 333, "rt": 123}', 
+                                                     '{"r3": 12.3, "r2": 31, "rt": 34}', '{"r3": 35.2, "r2": 1, "rt": 1.2}', '{"r3": 8.8, "r2": 21, "rt": 23.3}', 
+                                                     '{"r3": 31.3, "r2": 98, "rt": 8.1}', '{"r3": 41.8, "r2": 5, "rt": 3.9}', '{"r3": 6.3, "r2": 23.1, "rt": 34.2}', 
+                                                     '{"r3": 61.3, "r2": 1, "rt": 3.3}', '{"r3": 8.5, "r2": 7.8, "rt": 76.2}', '{"r3": 213.1, "r2": 38, "rt": 16.2}', 
+                                                     232.34, '{"access_energy": 150.8}', stringsAsFactors = FALSE))
       
-      df_features <- rbind.data.frame(df_features, c(29, 15, 58, 8, '{"seed_k": 23}', 4, 1, '{"cons_x": "conservationx"}', 658.45, '{"free_energy_x": 332.3}', 
-                                        '{"r3": 332.3, "r2": 34, "rt": 21.3}', '{"r3": 23.3, "r2": 43, "rt": 5.3}', '{"r3": 43.3, "r2": 34, "rt": 4.3}', 
-                                        '{"r3": 65.3, "r2": 1, "rt": 2.3}', '{"r3": 3.3, "r2": 32, "rt": 0.3}', '{"r3": 67.3, "r2": 6, "rt": 7.3}', 
-                                        '{"r3": 4.3, "r2": 5, "rt": 5.3}', '{"r3": 5.3, "r2": 34, "rt": 21.3}', '{"r3": 78.3, "r2": 34, "rt": 2.3}', 
-                                        '{"r3": 98.3, "r2": 7.8, "rt": 21.3}', '{"r3": 332.3, "r2": 34.8, "rt": 6.3}', '{}', 3, '{}', 
-                                         ""), stringsAsFactors = FALSE)
+      df_features <- rbind.data.frame(df_features, c(v_bs_id[3], 15, 34.1, 53.9, '{"seed": {"7mer-m8": 87}}', 4, 3,'{"conservation": "conserved"}', 1.2, '{"free_energy1": 89.1}', 
+                                                     '{"r3": 40.2, "r2": 19, "rt": 3}', '{"r3": 52.2, "r2": 58, "rt": 21.2}', '{"r3": 11, "r2": 23.2, "rt": 5}', 
+                                                     '{"r3": 62, "r2": 66, "rt": 4}', '{"r3": 20, "r2": 97, "rt": 2.8}', '{"r3": 79, "r2": 80.8, "rt": 0}', 
+                                                     '{"r3": 59.2, "r2": 64, "rt": 7.3}', '{"r3": 60.8, "r2": 8, "rt": 5.1}', '{"r3": 100, "r2": 5, "rt": 21.3}', 
+                                                     '{"r3": 16, "r2": 12, "rt": 2.3}', '{"r3": 71, "r2": 44, "rt": 21.3}', '{"r3": 5.2, "r2": 41.3, "rt": 6.3}', 
+                                                     23.2, '{"access_energy": 332.3}', stringsAsFactors = FALSE))
       
-      df_features <- rbind.data.frame(df_features, c(30, 15, 3, 1.32, '{"seed_k": 23}', 4.3, 1, '{"cons_x": "conservationx"}', 123.3, '{"free_energy_x": 332.3}', 
-                                        '{"r3": 332.3, "r2": 34, "rt": 21.3}', '{"r3": 23.3, "r2": 43, "rt": 5.3}', '{"r3": 43.3, "r2": 34, "rt": 4.3}', 
-                                        '{"r3": 65.3, "r2": 1, "rt": 2.3}', '{"r3": 3.3, "r2": 32, "rt": 0.3}', '{"r3": 67.3, "r2": 6, "rt": 7.3}', 
-                                        '{"r3": 4.3, "r2": 5, "rt": 5.3}', '{"r3": 5.3, "r2": 34, "rt": 21.3}', '{"r3": 78.3, "r2": 34, "rt": 2.3}', 
-                                        '{"r3": 98.3, "r2": 7.8, "rt": 21.3}', '{"r3": 332.3, "r2": 34.8, "rt": 6.3}', '{}', 232, '{}', 
-                                         ""), stringsAsFactors = FALSE)
+      df_features <- rbind.data.frame(df_features, c(v_bs_id[4], 15, 352.1, 0.3, '{"seed": {"7mer-m8": 32}}', 4, 3,'{"conservation": "poorly conserved"}', 66.4, '{"free_energy": 1.2}', 
+                                                     '{"r3": 2, "r2": 27, "rt": 14}', '{"r3": 332.3, "r2": 29, "rt": 44}', '{"r3": 3.5, "r2": 3.3, "rt": 5.2}', 
+                                                     '{"r3": 34, "r2": 41, "rt": 374}', '{"r3": 65.3, "r2": 45, "rt": 15.3}', '{"r3": 1.2, "r2": 32.1, "rt": 22}', 
+                                                     '{"r3": 50, "r2": 43, "rt": 49}', '{"r3": 4.3, "r2": 5, "rt": 18.2}', '{"r3": 25.9, "r2": 34, "rt": 2.6}', 
+                                                     '{"r3": 7, "r2": 17, "rt": 13}', '{"r3": 98.3, "r2": 4, "rt": 21.8}', '{"r3": 22.4, "r2": 3.7, "rt": 2.3}', 
+                                                     145.2, '{"access_energy": 12.7}', stringsAsFactors = FALSE)) 
       
-      
-      names(df_features) <- c("bs_id", "feat_seed_type_id", "feat_seed_score", "feat_seed_pct", "feat_seed_add", 
+      colnames(df_features) <- c("bs_id", "feat_seed_type_id", "feat_seed_score", "feat_seed_pct", "feat_seed_add", 
       "feat_cons_mf_id", "feat_cons_ms_id", "feat_cons_add", "feat_free_energy", "feat_free_energy_add", "feat_insite_fe_region", 
       "feat_insite_match_region", "feat_insite_mismatch_region", "feat_insite_gc_match_region", "feat_insite_gc_mismatch_region", 
       "feat_insite_au_match_region", "feat_insite_au_mismatch_region", "feat_insite_gu_match_region", "feat_insite_gu_mismatch_region", 
-      "feat_insite_bulges_mirna_region", "feat_insite_bulged_nucl_region", "feat_insite_add", "feat_acc_energy", "feat_ae_add", "feat_new")
+      "feat_insite_bulges_mirna_region", "feat_insite_bulged_nucl_region", "feat_insite_add", "feat_acc_energy", "feat_ae_add")
 
+      ################
+      
       if (nrow(df_features) == 0)
         {
           mensaje_error <<- msg_aviso_obtener_features
@@ -954,30 +978,27 @@ RecuperarMirnaUtrPrecomputados <- function(mirna_utr_precomp)
           for(i in 1 : nrow(df_features))
             {
               if (is.function(updateProgress)) { text <- "Calculando features"; updateProgress(detail = text) }
-              
-              # Hay que comprobar si hay features nuevos (no se implementa por falta de tiempo)
-              # if (df_features$feat_new != "")
-              #   {
-              #     consulta_sql <- sprintf(SQL_SELECT_COUNT_FEATURES, df_features$feat_id[i])            
-              # }
-              
-              browser()
+
+              #browser()
               consulta_sql <- sprintf(SQL_SELECT_BS_FEAT_ID, as.integer(df_features$bs_id[i]))
-              data <- ConsultarDatosBD(con_db = con, consulta_sql = consulta_sql)
+              datos <- ConsultarDatosBD(con_db = con, consulta_sql = consulta_sql)
+              #browser()
               if (is.null(mensaje_error) == FALSE) { dbRollback(conn = con); DesconectarBD(con_db = con); return(FALSE) }
               
-              if (nrow(data) == 0) # Si es nuevo se inserta
+              if (is.na(datos$feat_id)) # Si es nuevo se inserta
                 {
+                  #browser()
+                  options(digits = 6)
                   consulta_sql <- sprintf(SQL_INSERT_FEATURES,
-                                          #df_features$feat_id[i], 
+                                          as.integer(datos$bs_feat_id),
                                           as.integer(df_features$feat_seed_type_id[i]), 
-                                          as.numeric(df_features$feat_seed_score[i]), 
-                                          as.numeric(df_features$feat_seed_pct[i]), 
+                                          as.double(df_features$feat_seed_score[i]), 
+                                          as.double(df_features$feat_seed_pct[i]), 
                                           df_features$feat_seed_add[i], 
                                           as.integer(df_features$feat_cons_mf_id[i]), 
                                           as.integer(df_features$feat_cons_ms_id[i]), 
                                           df_features$feat_cons_add[i], 
-                                          as.numeric(df_features$feat_free_energy[i]), 
+                                          as.double(df_features$feat_free_energy[i]), 
                                           df_features$feat_free_energy_add[i], 
                                           df_features$feat_insite_fe_region[i], 
                                           df_features$feat_insite_match_region[i], 
@@ -991,37 +1012,32 @@ RecuperarMirnaUtrPrecomputados <- function(mirna_utr_precomp)
                                           df_features$feat_insite_bulges_mirna_region[i], 
                                           df_features$feat_insite_bulged_nucl_region[i], 
                                           df_features$feat_insite_add[i], 
-                                          as.numeric(df_features$feat_acc_energy[i]), 
-                                          df_features$feat_ae_add[i],
-                                          "nextval('mirnaplatform.new_feature_id_seq'::regclass)")
-                  browser()                        
-                  EjecutarConsultaBD(con_db = con, consulta_sql = consulta_sql)
-                  if (is.null(mensaje_error) == FALSE) { dbRollback(conn = con); DesconectarBD(con_db = con); return(FALSE) }
-                  
-                  # Se consulta el feat_id recién guardado en features
-                  consulta_sql = sprintf(SQL_SELECT_FEATURES_ID)
-                  data <- ConsultarDatosBD(con_db = con, consulta_sql = consulta_sql)
-                  
-                  if (is.null(mensaje_error) == FALSE) { dbRollback(conn = con); DesconectarBD(con_db = con); return(FALSE) }
-                  
-                  
-                  # Se actualiza el feat_id correspondiente en binding-sites
-                  consulta_sql = sprintf(SQL_UPDATE_BS_FEAT_ID, data$feat_id, df_features$bs_id[i])
+                                          as.double(df_features$feat_acc_energy[i]), 
+                                          df_features$feat_ae_add[i])
+                                          #"nextval('mirnaplatform.new_feature_id_seq'::regclass)")
                                           
+                  
                   EjecutarConsultaBD(con_db = con, consulta_sql = consulta_sql)
+                  if (is.null(mensaje_error) == FALSE) { dbRollback(conn = con); DesconectarBD(con_db = con); return(FALSE) }
+                  #browser()
+                  
+                  if (is.null(mensaje_error) == FALSE) { dbRollback(conn = con); DesconectarBD(con_db = con); return(FALSE) }
+                                          
+                  #EjecutarConsultaBD(con_db = con, consulta_sql = consulta_sql)
                   if (is.null(mensaje_error) == FALSE) { dbRollback(conn = con); DesconectarBD(con_db = con); return(FALSE) }
               
               }else    # Si existe se actualiza
                 {
+                  #browser()
                   consulta_sql <- sprintf(SQL_UPDATE_FEATURES,
                                           as.integer(df_features$feat_seed_type_id[i]), 
-                                          as.numeric(df_features$feat_seed_score[i]), 
-                                          as.numeric(df_features$feat_seed_pct[i]), 
+                                          as.double(df_features$feat_seed_score[i]), 
+                                          as.double(df_features$feat_seed_pct[i]), 
                                           df_features$feat_seed_add[i], 
                                           as.integer(df_features$feat_cons_mf_id[i]), 
                                           as.integer(df_features$feat_cons_ms_id[i]), 
                                           df_features$feat_cons_add[i], 
-                                          as.numeric(df_features$feat_free_energy[i]), 
+                                          as.double(df_features$feat_free_energy[i]), 
                                           df_features$feat_free_energy_add[i], 
                                           df_features$feat_insite_fe_region[i], 
                                           df_features$feat_insite_match_region[i], 
@@ -1035,130 +1051,206 @@ RecuperarMirnaUtrPrecomputados <- function(mirna_utr_precomp)
                                           df_features$feat_insite_bulges_mirna_region[i], 
                                           df_features$feat_insite_bulged_nucl_region[i], 
                                           df_features$feat_insite_add[i], 
-                                          as.numeric(df_features$feat_acc_energy[i]), 
+                                          as.double(df_features$feat_acc_energy[i]), 
                                           df_features$feat_ae_add[i],
                                           #data$new_id,
-                                          data$feat_id)
-                  browser()                      
+                                          as.integer(datos$feat_id))
+                  #browser()                      
                   EjecutarConsultaBD(con_db = con, consulta_sql = consulta_sql)
                   if (is.null(mensaje_error) == FALSE) { dbRollback(conn = con); DesconectarBD(con_db = con); return(FALSE) }
-                  
-                  # Se consulta el feat_id recién guardado en features
-                  consulta_sql = sprintf(SQL_SELECT_BS_ID_FEATURES)
-                  data <- ConsultarDatosBD(con_db = con, consulta_sql = consulta_sql)
-                  
-                  if (is.null(mensaje_error) == FALSE) { dbRollback(conn = con); DesconectarBD(con_db = con); return(FALSE) }
-                  # Se actualiza el feat_id correspondiente en binding-sites
-                  browser() 
-                  consulta_sql = sprintf(SQL_UPDATE_BS_FEAT, data$feat_id, df_features$bs_id[i])
-                  EjecutarConsultaBD(con_db = con, consulta_sql = consulta_sql)
               }
   
-              if (is.null(mensaje_error) == FALSE) { dbRollback(conn = con); DesconectarBD(con_db = con);  error(logger, e); return }
+              if (is.null(mensaje_error) == FALSE) { dbRollback(conn = con); DesconectarBD(con_db = con); return(FALSE) }
           }
         }
         
       dbCommit(conn = con)            
       DesconectarBD(con_db = con) # Se cierra la conexión
-      
-      # if (tipo == "calc_parte")
-      #   {
-      #     con <- ConectarBD()
-      #     if (is.null(mensaje_error) == FALSE) { return(FALSE) }
-      #     
-      #     consulta_sql = sprintf(SQL_SELECT_FEATURES_BS_ID, df_binding_sites_potenciales$bs_id)
-      #     data <- EjecutarConsultaBD(con_db = con, consulta_sql = consulta_sql)
-      #     if (is.null(mensaje_error) == FALSE) { return(FALSE) }
-      #     
-      #     # Se añaden los features precomputados
-      #     df_features <- rbind.data.frame(df_features, data, stringsAsFactors = FALSE)
-      #     DesconectarBD(con_db = con) # Se cierra la conexión
-      # }
-      
       if (is.null(mensaje_error) == FALSE) { return(FALSE) } 
       
     ##### 3. Evaluación de binding-sites potenciales
+      #browser()
+      v_binding_sites_definitivos <- EvaluarBindingSitesPotenciales(bs_potenciales = df_binding_sites_potenciales, 
+                                                                    features = df_features, 
+                                                                    updateProgress = updateProgress)
       
-      df_binding_sites_definitivos <- EvaluarBindingSitesPotenciales(bs_potenciales = df_binding_sites_potenciales, 
-                                                                     features = df_features, 
-                                                                     updateProgress = updateProgress)
+      v_binding_sites_definitivos <- c(v_bs_id[1], v_bs_id[2], v_bs_id[3])
       
       if (is.null(mensaje_error) == FALSE) { return(FALSE) }  
       
-      if (nrow(df_binding_sites) == 0)
+      if (length(v_binding_sites_definitivos) == 0)
         {
           mensaje_error <<- msg_aviso_evaluar_bs_potenciales
-          return (FALSE)
+          return(FALSE)
       }else
         {
+          #df_mirna_id_seq <- sort(v_binding_sites_definitivos) # Descomentar en real
           con <- ConectarBD()
           if (is.null(mensaje_error) == FALSE) { return(FALSE) }  
+          
+          consulta_sql <- "BEGIN TRANSACTION"
+          EjecutarConsultaBD(con_db = con, consulta_sql = consulta_sql)
+          
+          if (is.null(mensaje_error) == FALSE) { dbRollback(conn = con); DesconectarBD(con_db = con); return(FALSE) }
         
-          for(i in 1 : nrow(df_binding_sites))
+          for(i in 1 : length(v_binding_sites_definitivos))
             {
               if (is.function(updateProgress)) { text <- "Evaluando binding-sites"; updateProgress(detail = text) }
             
               # Se actualizan los binding-sites a definitivos (valor: 1)
-              consulta_sql <- sprintf(SQL_UPDATE_BINDING_SITES_ID, 1, df_binding_sites_definitivos$bs_id[i])
+              consulta_sql <- sprintf(SQL_UPDATE_BINDING_SITES_ID, 1, v_binding_sites_definitivos[i])
               
               EjecutarConsultaBD(con_db = con, consulta_sql = consulta_sql)
-              if (is.null(mensaje_error) == FALSE) { DesconectarBD(con_db = con); return(FALSE) }  
+              if (is.null(mensaje_error) == FALSE) { dbRollback(conn = con); DesconectarBD(con_db = con); return(FALSE) }
           }
         
-          DesconectarBD(con_db = con)
+          dbCommit(conn = con)            
+          DesconectarBD(con_db = con) # Se cierra la conexión
       }
   
       ##### 4. Predicción final
       # Se recuperan todos los binding-sites definitivos
+      #browser()
       
-      
-      consulta_sql <- sprintf(SQL_BINDING_SITES_DEFINITIVOS, df_binding_sites_definitivos$bs_id)
       con <- ConectarBD()
       if (is.null(mensaje_error) == FALSE) { return(FALSE) }
       
-      EjecutarConsultaBD(con_db = con, consulta_sql = consulta_sql)
+      consulta_sql <- sprintf(SQL_BINDING_SITES_DEFINITIVOS, v_binding_sites_definitivos)
+      datos <- ConsultarDatosBD(con_db = con, consulta_sql = consulta_sql)
       if (is.null(mensaje_error) == FALSE) { DesconectarBD(con_db = con); return(FALSE) }  
+      #browser()
+      DesconectarBD(con)
       
-      df_prediccion_final <- PrediccionFinalTargets(binding_sites_definitivos = df_binding_sites_definitivos, 
+      df_prediccion_final <- PrediccionFinalTargets(binding_sites_definitivos = datos, 
                                                     updateProgress = updateProgress)
       
+      #browser()
+      ########## CASO DE PRUEBA
+      df_prediccion_final <- data.frame(mirna_id = rep("hsa-mir-510", 3), 
+                                        utr_id = c("ENST00000470094", "ENST00000380152", "ENST00000528762"),
+                                        bs_id = v_binding_sites_definitivos,
+                                        score = c(10, 25.4, 3.1))
+      
+      #########
+      #browser()
       # Se guardan los datos del output en la tabla output_user
-      df_output_user <- data.frame(stringsAsFactors = FALSE)
+      df_output_user <- data.frame(ouput_datetime = NA, output_target = NA, input_id = NA, stringsAsFactors = FALSE)
       output_fechahora <- format(x = Sys.time(), format = "%Y-%m-%d %H:%M:%S")
       df_output_user$ouput_datetime <- output_fechahora
+      df_output_user$input_id <- input_user_id
       
       if (nrow(df_prediccion_final) == 0)
         {
           mensaje_error <<- msg_aviso_prediccion_final
-          df_output_user$output_target <- ""
-
+          df_output_user$output_target <- "{}"
       }else
         {
-          con <- ConectarBD()
-          if (is.null(mensaje_error) == FALSE) { return(FALSE) }
-
+          df_prediccion_final <- arrange(df_prediccion_final, mirna_id, utr_id, bs_id)
           target_mirna <- c()
-          mirna_unicos <- unique(df_prediccion_final$mirna_id)
+          mirna_unicos <- as.character(sort(unique(df_prediccion_final$mirna_id)))
           
           for(i in 1 : length(mirna_unicos))
             {
-              target_mirna_aux <- subset(x = df_prediccion_final, mirna_id == mirna_unicos[i], select = c(mirna_id, target_mirna))
+              #browser()
+              target_mirna_aux <- subset(x = df_prediccion_final, mirna_id == mirna_unicos[i], select = c(mirna_id, utr_id))
             
-              targets_aux <- c(paste0("\"mirna_id\": \"", paste0(mirna_unicos[i], "\", \"target\": [\"", paste0(target_mirna_aux$target_mirna, collapse = "\", \""), paste0("\"]"))))
-              target_mirna <<- c(paste(targets_aux, collapse = ",", targets_aux))
+              targets_aux <- c(paste0("\"mirna_id\": \"", paste0(mirna_unicos[i], "\", \"target\": [\"", paste0(target_mirna_aux$utr_id, collapse = "\", \""), paste0("\"]"))))
+              target_mirna <- c(paste(target_mirna, collapse = ",", targets_aux))
           }
           
           df_output_user$output_target <- target_mirna
-          df_output_user$input_id <- input_user_id
-        }
+                    
+          #browser()
+          con <- ConectarBD()
+          if (is.null(mensaje_error) == FALSE) { return(FALSE) }
+          #browser()
+          consulta_sql <- "BEGIN TRANSACTION"
+          EjecutarConsultaBD(con_db = con, consulta_sql = consulta_sql)
+          if (is.null(mensaje_error) == FALSE) { DesconectarBD(con_db = con); return(FALSE) }
+          
+          v_tg_id <- c()
+          # Se guardan los datos en targets
+          for (i in 1: nrow(df_prediccion_final))
+            {
+              consulta_sql <- sprintf(SQL_SELECT_ID_TARGETS, 
+                                      df_prediccion_final$mirna_id[i], df_prediccion_final$utr_id[i], df_prediccion_final$bs_id[i])
+            
+              datos <- ConsultarDatosBD(con_db = con, consulta_sql = consulta_sql)
+              if (is.null(mensaje_error) == FALSE) { dbRollback(conn = con); DesconectarBD(con_db = con); return(FALSE) }
+              
+              #browser()
+              if(nrow(datos) == 0)
+                {
+                  consulta_sql <- sprintf(SQL_INSERT_TARGETS, 
+                                          df_prediccion_final$mirna_id[i], df_prediccion_final$utr_id[i],
+                                          df_prediccion_final$bs_id[i], 29, df_prediccion_final$score[i])  # tm_id a 1 para el ejemplo
+                  
+              }else
+                {
+                  consulta_sql <- sprintf(SQL_UPDATE_TARGETS, 
+                                          df_prediccion_final$mirna_id[i], df_prediccion_final$utr_id[i], 
+                                          df_prediccion_final$bs_id[i], 29, df_prediccion_final$score[i],  # tm_id a 1 para el ejemplo
+                                          datos$tg_id) 
+                }
+            
+            #browser()
+            rs <- EjecutarConsultaBD(con_db = con, consulta_sql = consulta_sql)
+            if (is.null(mensaje_error) == FALSE) { dbRollback(conn = con); DesconectarBD(con_db = con); return(FALSE) }
+            datos <- fetch(rs)
+            dbClearResult(rs)
+            v_tg_id <- c(v_tg_id, datos$tg_id)
+            
+            if (is.null(mensaje_error) == FALSE) { dbRollback(conn = con); DesconectarBD(con_db = con); return(FALSE) }
+          }
+          
+        dbCommit(con)
+        DesconectarBD(con)
+      }
       
-      InsertarDatosBD(con_db = con, tabla_bd = TABLA_OUTPUT_USER, df_datos = df_output_user)
+      #browser()
+      df_prediccion_final$tg_id <- v_tg_id
+      con <- ConectarBD()
+      
+      consulta_sql <- sprintf(SQL_INSERT_OUTPUT_USER, df_output_user$ouput_datetime, df_output_user$input_id,  df_output_user$output_target)
+      EjecutarConsultaBD(con_db = con, consulta_sql = consulta_sql)
       if (is.null(mensaje_error) == FALSE) { DesconectarBD(con_db = con); return(FALSE) }
       
-      DesconectarBD(con_db)
+      # Se actualizan todos los binding-sites a potenciales (valor: 0)
+      con <- ConectarBD()
+      if (is.null(mensaje_error) == FALSE) { return(FALSE) }
+      
+      datos <- ConsultarDatosBD(con_db = con, consulta_sql = SQL_UPDATE_BINDING_SITES_TYPE)
+      if (is.null(mensaje_error) == FALSE) { DesconectarBD(con_db = con); return(FALSE) }
+      
+      DesconectarBD(con)
+      return (df_prediccion_final)
     }
 
+#' Functión MostrarResultados(target_id): 
+#' Recupera de la base de datos los resultados del algoritmo para mostrar en pantalla
+#'
+#' @param target_id character vector - IDs de la tabla target
+#'
+#' @return df_targets - data.frame - Resultados a mostrar al usuario
+#'
+#' @examples MostrarResultados(target_id)
 
+  MostrarResultados <- function(target_id)
+    {
+      #browser()
+      df_targets <- data.frame(stringsAsFactors = FALSE)
+      v_target_id <- paste(target_id, collapse = ",")
+      con <- ConectarBD()
+      if (is.null(mensaje_error) == FALSE) { return(df_targets) }
+      
+      consulta_sql <- sprintf(SQL_SELECT_TARGETS, v_target_id)
+      
+      df_targets <- ConsultarDatosBD(con_db = con, consulta_sql = consulta_sql)
+      if (is.null(mensaje_error) == FALSE) { DesconectarBD(con_db = con); return(df_targets) }
+      
+      DesconectarBD(con)
+      return(df_targets)
+  }
 
 
 

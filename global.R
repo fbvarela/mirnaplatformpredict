@@ -28,6 +28,7 @@ TABLA_INPUT_USER <- "input_user"
 TABLA_OUTPUT_USER <- "output_user"
 TABLA_BINDINGSITES <- "binding_sites"
 TABLA_FEATURES <- "features"
+TABLA_TARGETS <- "targets"
 TABLA_TEXTMINING <- "text_mining"
 TABLA_MIRNATARGETS <- "mirnatargets_release_targetscan"
 TABLA_DATASETS_ENSEMBL <- "datasets_ensembl"
@@ -36,8 +37,6 @@ TABLA_DATASETS_ENSEMBL <- "datasets_ensembl"
 ARCHIVO_ZIP_RELEASE_TARGETSCAN <- "www/Predicted_Targets_Info.default_predictions.txt.zip"
 ARCHIVO_TXT_RELEASE_TARGETSCAN <- "www/Predicted_Targets_Info.default_predictions.txt"
 
-# SECUENCIAS
-SEQ_INPUT_USER_MIRNA_ID <- "mirnaplatform.input_id_seq" 
 
 # CONSULTAS SQL 
 SQL_INSERT_INPUT_USER <- paste("INSERT INTO", paste(ESQUEMA_BD, paste(TABLA_INPUT_USER, "(input_id, input_datetime, input_mirna_id, input_gen_id, input_utr_id, input_alg) VALUES (%s'), '%s', '{%s}', '{%s}', '{%s}', '%s');"), sep = "."))
@@ -76,31 +75,42 @@ SQL_SELECT_BINDINGSITES_PAR_MIRNAUTR_INPUT <- paste("SELECT bs_id, mirna_id, utr
 
 #SQL_SELECT_COUNT_BS <- paste("SELECT COUNT(bs_id) FROM", paste(ESQUEMA_BD, paste(TABLA_BINDINGSITES, "WHERE bs_id = '%s';"), sep = "."))                                         
 
-SQL_SELECT_BS_ID_POTENCIALES <- paste("SELECT bs_id, feat_id FROM", paste(ESQUEMA_BD, paste(TABLA_BINDINGSITES, "WHERE mirna_id = '%s' AND utr_id = '%s' AND bs_mirna_seq_start = %d AND bs_mirna_seq_end = %d AND bs_utr_seq_start = %d AND bs_utr_seq_end = %d AND bs_seq_seed = '%s' AND bs_seq_seed_start= %d AND bs_seq_seed_end = %d AND bs_seq_region_3 = '%s' AND bs_seq_region_3_start = %d AND bs_seq_region_3_end = %d AND bs_seq_region_total = '%s' AND bs_seq_region_total_start = %d AND bs_seq_region_total_end = %d AND bs_score = %f AND bs_scoring_matrix = '{%s}' AND bs_other = '%s' AND bs_type = %d"), sep = "."))
+SQL_SELECT_BS_ID_POTENCIALES <- paste("SELECT bs_id, feat_id FROM", paste(ESQUEMA_BD, paste(TABLA_BINDINGSITES, "WHERE mirna_id = '%s' AND utr_id = '%s' AND bs_mirna_seq_start = %d AND bs_mirna_seq_end = %d AND bs_utr_seq_start = %d AND bs_utr_seq_end = %d AND bs_seq_seed = '%s' AND bs_seq_seed_start= %d AND bs_seq_seed_end = %d AND bs_seq_region_3 = '%s' AND bs_seq_region_3_start = %d AND bs_seq_region_3_end = %d AND bs_seq_region_total = '%s' AND bs_seq_region_total_start = %d AND bs_seq_region_total_end = %d AND bs_score = %f AND bs_scoring_matrix = '{%s}' AND bs_other = '%s' AND bs_type = %d;"), sep = "."))
 
 SQL_INSERT_BINDING_SITES_POTENCIALES <- paste("INSERT INTO", paste(ESQUEMA_BD, paste(TABLA_BINDINGSITES, "(bs_id, mirna_id, utr_id, feat_id, bs_mirna_seq_start, bs_mirna_seq_end, bs_utr_seq_start, bs_utr_seq_end, bs_seq_seed, bs_seq_seed_start, bs_seq_seed_end, bs_seq_region_3, bs_seq_region_3_start, bs_seq_region_3_end, bs_seq_region_total, bs_seq_region_total_start, bs_seq_region_total_end, bs_score, bs_scoring_matrix, bs_other, bs_type) VALUES (DEFAULT, '%s', '%s', %s, %d, %d, %d, %d, '%s', %d, %d, '%s', %d, %d, '%s', %d, %d, %f, '{%s}', '%s', %d);"), sep = "."))  
 SQL_UPDATE_BINDING_SITES_POTENCIALES <- paste("UPDATE", paste(ESQUEMA_BD, paste(TABLA_BINDINGSITES, "SET mirna_id = '%s', utr_id = '%s', bs_mirna_seq_start = %d, bs_mirna_seq_end = %d, bs_utr_seq_start = %d, bs_utr_seq_end = %d, bs_seq_seed = '%s', bs_seq_seed_start = %d, bs_seq_seed_end = %d, bs_seq_region_3 = '%s', bs_seq_region_3_start = %d, bs_seq_region_3_end = %d, bs_seq_region_total = '%s', bs_seq_region_total_start = %d, bs_seq_region_total_end = %d, bs_score = %f, bs_scoring_matrix = '{%s}', bs_other = '%s', bs_type = %d WHERE bs_id = %d;"), sep = "."))
 
 SQL_SELECT_COUNT_FEATURES <- paste("SELECT COUNT(feat_id) FROM", paste(ESQUEMA_BD, paste(TABLA_FEATURES, "WHERE feat_id = '%s';"), sep = "."))       
-SQL_SELECT_BS_FEAT_ID <- paste("SELECT feat_id FROM", paste(ESQUEMA_BD, paste(TABLA_BINDINGSITES, "WHERE bs_id = %d;"), sep = "."))       
+#SQL_SELECT_BS_FEAT_ID <- paste("SELECT feat_id FROM", paste(ESQUEMA_BD, paste(TABLA_BINDINGSITES, "WHERE bs_id = %d;"), sep = "."))       
+SQL_SELECT_BS_FEAT_ID <- "SELECT bs.feat_id AS bs_feat_id, ft.feat_id  FROM mirnaplatform.binding_sites bs LEFT OUTER JOIN  mirnaplatform.features ft ON (bs.feat_id = ft.feat_id) WHERE bs_id = '%s';"
 
 SQL_SELECT_FEATURES_ID <- paste("SELECT MAX(feat_id) FROM", paste(ESQUEMA_BD, paste(TABLA_FEATURES, ";"), sep = "."))                                         
                                       
-SQL_SELECT_FEATURES_BS_ID <- "SELECT mirnaplatform.features.* from mirnaplatform.features, mirnaplatform.binding_sites WHERE mirnaplatform.features.feat_id = mirnaplatform.binding_sites.feat_id AND bs_id IN ('%s'); "
+SQL_SELECT_FEATURES_BS_ID <- "SELECT mirnaplatform.features.* from mirnaplatform.features, mirnaplatform.binding_sites WHERE mirnaplatform.features.feat_id = mirnaplatform.binding_sites.feat_id AND bs_id IN ('%s');"
 
-SQL_INSERT_FEATURES <- paste("INSERT INTO", paste(ESQUEMA_BD, paste(TABLA_FEATURES, "(feat_id, feat_seed_type_id, feat_seed_score, feat_seed_pct, feat_seed_add, feat_cons_mf_id, feat_cons_ms_id, feat_cons_add, feat_free_energy, feat_free_energy_add, feat_insite_fe_region, feat_insite_match_region, feat_insite_mismatch_region, feat_insite_gc_match_region, feat_insite_gc_mismatch_region, feat_insite_au_match_region, feat_insite_au_mismatch_region, feat_insite_gu_match_region, feat_insite_gu_mismatch_region, feat_insite_bulges_mirna_region, feat_insite_bulged_nucl_region, feat_insite_add, feat_acc_energy, feat_ae_add, feat_new_id) VALUES (DEFAULT, %d, %f, %f, '{%s}', %d, %d, '{%s}', %f, '{%s}', '{%s}', '{%s}', '{%s}', '{%s}', '{%s}', '{%s}', '{%s}', '{%s}', '{%s}', '{%s}', '{%s}', '{%s}', '{%s}', '{%s}', %f, '{%s}', %d);"), sep = "."))
+SQL_INSERT_FEATURES <- paste("INSERT INTO", paste(ESQUEMA_BD, paste(TABLA_FEATURES, "(feat_id, feat_seed_type_id, feat_seed_score, feat_seed_pct, feat_seed_add, feat_cons_mf_id, feat_cons_ms_id, feat_cons_add, feat_free_energy, feat_free_energy_add, feat_insite_fe_region, feat_insite_match_region, feat_insite_mismatch_region, feat_insite_gc_match_region, feat_insite_gc_mismatch_region, feat_insite_au_match_region, feat_insite_au_mismatch_region, feat_insite_gu_match_region, feat_insite_gu_mismatch_region, feat_insite_bulges_mirna_region, feat_insite_bulged_nucl_region, feat_insite_add, feat_acc_energy, feat_ae_add) VALUES (%d, %d, %f, %f, '%s', %d, %d, '%s', %f, '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', %f, '%s');"), sep = "."))
 SQL_UPDATE_FEATURES <- paste("UPDATE", paste(ESQUEMA_BD, paste(TABLA_FEATURES, "SET feat_seed_type_id = %d, feat_seed_score = %f, feat_seed_pct = %f, feat_seed_add = '%s', feat_cons_mf_id = %d, feat_cons_ms_id = %d, feat_cons_add = '%s', feat_free_energy = %f, feat_free_energy_add = '%s', feat_insite_fe_region = '%s', feat_insite_match_region = '%s', feat_insite_mismatch_region = '%s', feat_insite_gc_match_region = '%s', feat_insite_gc_mismatch_region = '%s', feat_insite_au_match_region = '%s', feat_insite_au_mismatch_region = '%s', feat_insite_gu_match_region = '%s', feat_insite_gu_mismatch_region = '%s', feat_insite_bulges_mirna_region = '%s', feat_insite_bulged_nucl_region = '%s', feat_insite_add = '%s', feat_acc_energy = %f, feat_ae_add = '%s' WHERE feat_id = %d;"), sep = "."))
+                                                                                                        
 SQL_UPDATE_BS_FEAT_ID <- paste("UPDATE", paste(ESQUEMA_BD, paste(TABLA_BINDINGSITES, "SET feat_id = %d WHERE bs_id = %d;"), sep = "."))
 
-SQL_BINDING_SITES_DEFINITIVOS <- paste("SELECT bs_id, mirna_id, utr_id, feat_id, bs_mirna_seq_start, bs_mirna_seq_end, bs_utr_seq_start, bs_utr_seq_end, bs_seq_seed, bs_seq_seed_start, bs_seq_seed_end, bs_seq_region_3, bs_seq_region_3_start, bs_seq_region_3_end, bs_seq_region_total, bs_seq_region_total_start, bs_seq_region_total_end, bs_score, bs_scoring_matrix, bs_type, bs_other::text FROM", paste(ESQUEMA_BD, paste(TABLA_BINDINGSITES, "WHERE bs_id IN ('%s') AND bs_type = 1 ORDER BY mirna_id, utr_id;"), sep = "."))
+SQL_SELECT_BINDING_SITES_DEFINITIVOS <- paste("SELECT bs_id, mirna_id, utr_id, feat_id, bs_mirna_seq_start, bs_mirna_seq_end, bs_utr_seq_start, bs_utr_seq_end, bs_seq_seed, bs_seq_seed_start, bs_seq_seed_end, bs_seq_region_3, bs_seq_region_3_start, bs_seq_region_3_end, bs_seq_region_total, bs_seq_region_total_start, bs_seq_region_total_end, bs_score, bs_scoring_matrix, bs_type, bs_other::text FROM", paste(ESQUEMA_BD, paste(TABLA_BINDINGSITES, "WHERE bs_id IN (%s) AND bs_type = 1 ORDER BY mirna_id, utr_id;"), sep = "."))
 
                                                                                                                                                                                                                                                                                                                                                                                                                               
-#CONSULTA DE RESULTADOS
-SQL_SELECT_TARGETS <- "SELECT rank() OVER (PARTITION BY  tg.mirna_id, tg.gen_id ORDER BY tg_score DESC) as \"Posición\", tg.mirna_id as \"miRNA ID\", tg.gen_id as \"gen ID\", tg_score as \"Puntuación\", tm_mirna_info::text as \"miRNA info\", tm_gen_info::text as \"gen info\"FROM mirnaplatform.targets AS tg, mirnaplatform.text_mining AS tm WHERE tg.tm_id = tm.tm_id ORDER BY tg.mirna_id, gen_id"
+#RESULTADOS
+SQL_SELECT_TARGETS_TODOS <- "SELECT RANK() OVER (PARTITION BY tg.mirna_id, tg.gen_id ORDER BY tg_score DESC) AS \"Posición\", tg.mirna_id AS \"miRNA ID\", tg.gen_id AS \"Target (gen ID)\", tg_score AS \"Puntuación\", tm_mirna_info::text AS \"miRNA info\", tm_gen_info::text as \"gen info\" FROM mirnaplatform.targets AS tg, mirnaplatform.text_mining AS tm WHERE tg.tm_id = tm.tm_id ORDER BY tg.mirna_id, gen_id;"
+SQL_SELECT_TARGETS <- "SELECT RANK() OVER (PARTITION BY tg.mirna_id, tg.gen_id ORDER BY tg_score DESC) AS \"Posición\", tg.mirna_id AS \"miRNA ID\", tg.gen_id AS \"Target (gen ID)\", tg_score AS \"Puntuación\", tm_mirna_info::text AS \"miRNA info\", tm_gen_info::text as \"gen info\" FROM mirnaplatform.targets AS tg, mirnaplatform.text_mining AS tm WHERE tg.tm_id = tm.tm_id AND tg_id IN (%s) ORDER BY tg.mirna_id, gen_id;"
+
+SQL_SELECT_COUNT_TARGETS <- paste("SELECT COUNT(tg_id) FROM", paste(ESQUEMA_BD, paste(TABLA_TARGETS, "WHERE mirna_id = '%s' AND gen_id = (SELECT utr_gen_id FROM mirnaplatform.utr_gen WHERE utr_id = '%s') AND bs_id = %d;"), sep = "."))
+SQL_SELECT_ID_TARGETS <- paste("SELECT tg_id FROM", paste(ESQUEMA_BD, paste(TABLA_TARGETS, "WHERE mirna_id = '%s' AND gen_id = (SELECT utr_gen_id FROM mirnaplatform.utr_gen WHERE utr_id = '%s') AND bs_id = %d;"), sep = "."))
+SQL_INSERT_TARGETS <- paste("INSERT INTO", paste(ESQUEMA_BD, paste(TABLA_TARGETS, "(tg_id, mirna_id, gen_id, bs_id, tm_id, tg_score) VALUES (DEFAULT, '%s', (SELECT utr_gen_id FROM mirnaplatform.utr_gen WHERE utr_id = '%s'), %d, %d, %f) RETURNING tg_id;"), sep = "."))
+SQL_UPDATE_TARGETS <- paste("UPDATE", paste(ESQUEMA_BD, paste(TABLA_TARGETS, "SET mirna_id = '%s', gen_id = (SELECT utr_gen_id FROM mirnaplatform.utr_gen WHERE utr_id = '%s'), bs_id = %d, tm_id = %d, tg_score = %f WHERE tg_id = %d RETURNING tg_id;"), sep = "."))
 
 SQL_UPDATE_BINDING_SITES_ID <- paste("UPDATE", paste(ESQUEMA_BD, paste(TABLA_BINDINGSITES, "SET bs_type = %d WHERE bs_id = %d;"), sep = "."))
 
 SQL_UPDATE_GEN <- paste("UPDATE", paste(ESQUEMA_BD, paste(TABLA_GEN, "SET gen_id = '%s', gen_attrib = '{%s}' WHERE gen_id = '%s';"), sep = "."))
+
+SQL_INSERT_OUTPUT_USER <- paste("INSERT INTO", paste(ESQUEMA_BD, paste(TABLA_OUTPUT_USER, "(output_id, output_datetime, input_id, output_target) VALUES (DEFAULT, '%s', %d, '{%s}');"), sep = "."))
+SQL_UPDATE_BINDING_SITES_TYPE <- paste("UPDATE", paste(ESQUEMA_BD, paste(TABLA_BINDINGSITES, "SET bs_type = 0"), sep = "."))
 
 msg_aviso_conexion_bd <- "No se ha podido conectar con la base de datos PostgreSQL"
 msg_error_conexion_bd <- "Error: no se ha podido conectar con la base de datos PostgreSQL"
@@ -244,4 +254,3 @@ archivo_log <- "log/mirnaplatform.log"
 msg_aviso_log <- paste("No se ha podido escribir en el archivo de log:", archivo_log)
 msg_error_log <- paste("Error: no se ha podido escribir en el archivo de log:", archivo_log)
 
-    

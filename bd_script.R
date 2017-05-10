@@ -30,8 +30,8 @@ if(!require(DBI)){
       print("Entrando en ConectarBD")
       mensaje_error <<- NULL
       con_db <- NULL
-      CerrarConexionesBD()
-      drv <- dbDriver("PostgreSQL")
+      CerrarConexionesBD() # Se cierran las conexiones libres
+      drv <- dbDriver("PostgreSQL") # Se carga el driver
       
       tryCatch(
         con_db <- dbConnect(drv = drv, dbname = db,
@@ -113,7 +113,7 @@ if(!require(DBI)){
 #' @param con_db Objeto conexión - Conexión abierta PostgreSQL
 #' @param consulta_sql character - Consulta SQL
 #'
-#' @return data: data.frame - Datos de la tabla | FALSE (error) 
+#' @return data: cursor de datos - Datos de la tabla | FALSE (error) 
 #' 
 #' @examples EjecutarConsultaBD(con, "INSERT INTO test VALUES('prueba')")
   
@@ -149,6 +149,7 @@ if(!require(DBI)){
   InsertarDatosBD <- function(con_db, esquema = ESQUEMA_BD, tabla_bd, df_datos)
     {
       print("Saliedo de EjecutarConsultaBD")
+      print(consulta_sql)
       mensaje_error <<- NULL
       data <- NULL
       
