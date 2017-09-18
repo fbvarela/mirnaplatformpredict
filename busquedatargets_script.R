@@ -80,17 +80,17 @@ source('global.R')
       )
       
       con <- ConectarBD()
-      if (is.null(mensaje_error)==FALSE) { return(FALSE) }
+      if (!is.null(mensaje_error)) { return(FALSE) }
       
       consulta_sql <- "BEGIN TRANSACTION"
       EjecutarConsultaBD (con_db = con, consulta_sql = consulta_sql)
-      if (is.null(mensaje_error) == FALSE) { dbRollback(con); DesconectarBD(con_db = con); return(FALSE) }
+      if (!is.null(mensaje_error)) { dbRollback(con); DesconectarBD(con_db = con); return(FALSE) }
       
       EjecutarConsultaBD(con_db = con, consulta_sql = SQL_DROP_MIRNATARGETS)
-      if (is.null(mensaje_error) == FALSE) { dbRollback(con); DesconectarBD(con_db = con); return(FALSE) }
+      if (!is.null(mensaje_error)) { dbRollback(con); DesconectarBD(con_db = con); return(FALSE) }
       
       EjecutarConsultaBD(con_db=con, tipo = "dbwrite", tabla_bd = TABLA_MIRNATARGETS, df_datos = df_release)
-      if (is.null(mensaje_error) == FALSE) { dbRollback(con); DesconectarBD(con_db = con); return(FALSE) }
+      if (!is.null(mensaje_error)) { dbRollback(con); DesconectarBD(con_db = con); return(FALSE) }
       
       dbCommit(conn=con)
       DesconectarBD(con_db=con)
