@@ -7,11 +7,11 @@ source('global.R')
         shinyjs::disable("submit_release_mirna")
         #browser()
         con <- ConectarBD()
-        if (is.null(mensaje_error) == FALSE) { error(logger, e); return(FALSE) }
+        if (!is.null(mensaje_error)) { error(logger, e); return(FALSE) }
         #browser()
         
         datos <- ConsultarDatosBD(con_db = con, consulta_sql = SQL_SELECT_MIRNATARGETS)
-        if (is.null(mensaje_error) == FALSE) { shinyjs::enable("submit_release_mirna"); DesconectarBD(con_db = con); return(FALSE) }
+        if (!is.null(mensaje_error)) { shinyjs::enable("submit_release_mirna"); DesconectarBD(con_db = con); return(FALSE) }
         
         DesconectarBD(con_db = con)
         #browser()
@@ -27,10 +27,10 @@ source('global.R')
       mensaje_error <<- NULL
       shinyjs::disable("submit_results")
       con <- ConectarBD()
-      if (is.null(mensaje_error) == FALSE) { return(FALSE) }
+      if (!is.null(mensaje_error)) { return(FALSE) }
       
       datos <- ConsultarDatosBD(con_db = con, consulta_sql = SQL_SELECT_TARGETS_TODOS)
-      if (is.null(mensaje_error) == FALSE) { shinyjs::enable("submit_results"); DesconectarBD(con_db = con); return(FALSE) }
+      if (!is.null(mensaje_error)) { shinyjs::enable("submit_results"); DesconectarBD(con_db = con); return(FALSE) }
       shinyjs::enable("submit_results")
       
       if (nrow(datos) == 0) 
