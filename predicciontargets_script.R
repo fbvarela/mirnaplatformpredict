@@ -17,10 +17,10 @@ PrediccionTargets <- function(input, output, session)
     if (is.null(datasets))
       {
         con <- ConectarBD()
-        if (is.null(mensaje_error) == FALSE)  { return(FALSE) } 
+        if (!is.null(mensaje_error))  { return(FALSE) } 
       
         datasets <<- ConsultarDatosBD(con_db = con, consulta_sql = SQL_SELECT_DATASETS_ENSEMBL)
-        if (is.null(mensaje_error) == FALSE) { DesconectarBD(con_db = con);  return(FALSE) } 
+        if (!is.null(mensaje_error)) { DesconectarBD(con_db = con);  return(FALSE) } 
       
         DesconectarBD(con_db = con)
       
@@ -34,7 +34,7 @@ PrediccionTargets <- function(input, output, session)
     })
     
     ##browser()
-    if(is.null(mensaje_error) == FALSE && mensaje_error != "inicio")
+    if (!is.null(mensaje_error)) && mensaje_error != "inicio")
       {
         output$msg_info <- renderPrint({
           return(mensaje_error)
@@ -95,7 +95,7 @@ PrediccionTargets <- function(input, output, session)
               df_mirna_id_seq <- RecuperarSecuenciasMirna(mirna_id = text_mirna, 
                                                           updateProgress = updateProgress)   
               
-              if (is.null(mensaje_error) == FALSE) { return(MostrarMensajeUsuario(mensaje_error)) } 
+              if (!is.null(mensaje_error)) { return(MostrarMensajeUsuario(mensaje_error)) } 
               
               ##browser()
               # Recuperación de secuencias 3'UTR a partir del gen ID
@@ -104,19 +104,19 @@ PrediccionTargets <- function(input, output, session)
                                                                    gen_id_ref = input$radio_id_ref, 
                                                                    updateProgress = updateProgress)
               ##browser()
-              if (is.null(mensaje_error) == FALSE) { return(MostrarMensajeUsuario(mensaje_error)) } 
+              if (!is.null(mensaje_error)) { return(MostrarMensajeUsuario(mensaje_error)) } 
               
               # Añadir el campo secuencia mirna precomputada 0 | 1
               v_mirna_precomp <- ClasificarIDPrecomputado(tipo = "mirnaid",
                                                           df_id = df_mirna_id_seq)
               
-              if (is.null(mensaje_error) == FALSE) { return(MostrarMensajeUsuario(mensaje_error)) } 
+              if (!is.null(mensaje_error)) { return(MostrarMensajeUsuario(mensaje_error)) } 
               
               # Añadir el campo secuencia gen/utr precomputada 0 | 1
               v_utr_precomp <- ClasificarIDPrecomputado(tipo = "genutr", 
                                                         df_id = df_gen_utr_id_seq)
               
-              if (is.null(mensaje_error) == FALSE) { return(MostrarMensajeUsuario(mensaje_error)) } 
+              if (!is.null(mensaje_error)) { return(MostrarMensajeUsuario(mensaje_error)) } 
               
               ##browser()
               
@@ -145,18 +145,18 @@ PrediccionTargets <- function(input, output, session)
               df_mirna_id_seq <- RecuperarSecuenciasMirna(mirna_id = text_mirna,
                                                           updateProgress = updateProgress)   
               browser()
-              if (is.null(mensaje_error) == FALSE) { return(MostrarMensajeUsuario(mensaje_error)) } 
+              if (!is.null(mensaje_error)) { return(MostrarMensajeUsuario(mensaje_error)) } 
               
               # Añadir el campo secuencia mirna precomputada 0|1
               v_mirna_precomp <- ClasificarIDPrecomputado(tipo = "mirnaid",
                                                           df_id = df_mirna_id_seq)
               browser()
-              if (is.null(mensaje_error) == FALSE) { return(MostrarMensajeUsuario(mensaje_error)) } 
+              if (!is.null(mensaje_error)) { return(MostrarMensajeUsuario(mensaje_error)) } 
               
               objeto_fasta_utr <- LeerArchivoFasta(df_archivos_fasta$datapath) # Leer fasta
               browser()
               
-              if (is.null(mensaje_error) == FALSE) { return(MostrarMensajeUsuario(mensaje_error)) } 
+              if (!is.null(mensaje_error)) { return(MostrarMensajeUsuario(mensaje_error)) } 
               
               # Recuperación de secuencias 3'UTR a partir del gen ID
               df_gen_utr_id_seq <- RecuperarSecuenciasExtremo3utr(data_sel = datasets_sel, 
@@ -164,13 +164,13 @@ PrediccionTargets <- function(input, output, session)
                                                                   objeto_fasta = objeto_fasta_utr,
                                                                   updateProgress = updateProgress)
               browser()
-              if (is.null(mensaje_error) == FALSE) { return(MostrarMensajeUsuario(mensaje_error)) } 
+              if (!is.null(mensaje_error)) { return(MostrarMensajeUsuario(mensaje_error)) } 
               
               # Añadir el campo secuencia gen/utr precomputada 0|1
               v_utr_precomp <- ClasificarIDPrecomputado(tipo = "genutr", 
                                                         df_id = df_gen_utr_id_seq)
               browser()
-              if (is.null(mensaje_error) == FALSE) { return(MostrarMensajeUsuario(mensaje_error)) } 
+              if (!is.null(mensaje_error)) { return(MostrarMensajeUsuario(mensaje_error)) } 
               
               ##browser()
               
@@ -193,20 +193,20 @@ PrediccionTargets <- function(input, output, session)
                   {            
                     objeto_fasta_mirna <- LeerArchivoFasta(df_archivos_fasta$datapath) # Leer fasta
                     
-                    if (is.null(mensaje_error) == FALSE) { return(MostrarMensajeUsuario(mensaje_error)) } 
+                    if (!is.null(mensaje_error)) { return(MostrarMensajeUsuario(mensaje_error)) } 
                     
                     #Recuperación de secuencias mirRNA partir del archivo fasta
                     df_mirna_id_seq <- RecuperarSecuenciasMirna(mirna_id = text_mirna, 
                                                                 objeto_fasta = objeto_fasta_mirna, 
                                                                 updateProgress = updateProgress)  
                     browser()
-                    if (is.null(mensaje_error) == FALSE) { return(MostrarMensajeUsuario(mensaje_error)) } 
+                    if (!is.null(mensaje_error)) { return(MostrarMensajeUsuario(mensaje_error)) } 
                     
                     # Añadir el campo secuencia mirna precomputada 0 | 1
                     v_mirna_precomp <- ClasificarIDPrecomputado(tipo = "mirnaid",
                                                                 df_id = df_mirna_id_seq)
                     
-                    if (is.null(mensaje_error) == FALSE) { return(MostrarMensajeUsuario(mensaje_error)) } 
+                    if (!is.null(mensaje_error)) { return(MostrarMensajeUsuario(mensaje_error)) } 
                     
                     # Recuperación de secuencias 3'UTR a partir del gen ID
                     df_gen_utr_id_seq <- RecuperarSecuenciasExtremo3utr(gen_id = text_gen,                
@@ -214,13 +214,13 @@ PrediccionTargets <- function(input, output, session)
                                                                         gen_id_ref = input$radio_id_ref,
                                                                         updateProgress = updateProgress)
                     ##browser()
-                    if (is.null(mensaje_error) == FALSE) { return(MostrarMensajeUsuario(mensaje_error)) } 
+                    if (!is.null(mensaje_error)) { return(MostrarMensajeUsuario(mensaje_error)) } 
                     
                     # Añadir el campo precomputada 0 | 1
                     v_utr_precomp <- ClasificarIDPrecomputado(tipo = "genutr", 
                                                               df_id = df_gen_utr_id_seq)
                     
-                    if (is.null(mensaje_error) == FALSE) { return(MostrarMensajeUsuario(mensaje_error)) }
+                    if (!is.null(mensaje_error)){ return(MostrarMensajeUsuario(mensaje_error)) }
                     
                     df_mirna_id_seq$mirna_precomp <- v_mirna_precomp
                     df_gen_utr_id_seq$utr_precomp <- v_utr_precomp
@@ -246,7 +246,7 @@ PrediccionTargets <- function(input, output, session)
                  {
                     objeto_fasta <- LeerArchivoFasta(df_archivos_fasta[i,4]) 
                     
-                    if (is.null(mensaje_error) == FALSE) { return(MostrarMensajeUsuario(mensaje_error)) }  # Lectura fasta no válido
+                    if (!is.null(mensaje_error)) { return(MostrarMensajeUsuario(mensaje_error)) }  # Lectura fasta no válido
                     ##browser()
                   
                     if(df_archivos_fasta[i,5] == "RNA")
@@ -256,13 +256,13 @@ PrediccionTargets <- function(input, output, session)
                                                                     objeto_fasta = objeto_fasta, 
                                                                     updateProgress = updateProgress)  
                         
-                        if (is.null(mensaje_error) == FALSE) { return(MostrarMensajeUsuario(mensaje_error)) } 
+                        if (!is.null(mensaje_error)) { return(MostrarMensajeUsuario(mensaje_error)) } 
                         
                         # Añadir el campo secuencia mirna precomputada 0|1
                         v_mirna_precomp <- ClasificarIDPrecomputado(tipo = "mirnaid",
                                                                     df_id = df_mirna_id_seq)
                         
-                        if (is.null(mensaje_error) == FALSE) { return(MostrarMensajeUsuario(mensaje_error)) } 
+                        if (!is.null(mensaje_error)) { return(MostrarMensajeUsuario(mensaje_error)) } 
                       
                     }else
                       {
@@ -273,13 +273,13 @@ PrediccionTargets <- function(input, output, session)
                                                                             objeto_fasta = objeto_fasta,
                                                                             updateProgress = updateProgress)
                         ##browser()
-                        if (is.null(mensaje_error) == FALSE) { return(MostrarMensajeUsuario(mensaje_error)) } 
+                        if (!is.null(mensaje_error)) { return(MostrarMensajeUsuario(mensaje_error)) } 
                         
                         # Añadir el campo secuencia gen/utr precomputada 0|1
                         v_utr_precomp <- ClasificarIDPrecomputado(tipo = "genutr", 
                                                                   df_id = df_gen_utr_id_seq)
                         
-                        if (is.null(mensaje_error) == FALSE) { return(MostrarMensajeUsuario(mensaje_error)) } 
+                        if (!is.null(mensaje_error)) { return(MostrarMensajeUsuario(mensaje_error)) } 
                         
                         df_mirna_id_seq$mirna_precomp <- v_mirna_precomp
                         df_gen_utr_id_seq$utr_precomp <- v_utr_precomp
@@ -296,13 +296,13 @@ PrediccionTargets <- function(input, output, session)
             }
       
       ##browser()
-      if (is.null(mensaje_error) == FALSE) { return(MostrarMensajeUsuario(mensaje)) } 
+      if (!is.null(mensaje_error)) { return(MostrarMensajeUsuario(mensaje)) } 
       
       df_binding_sites_precomp_bd <- ClasificarMirnaUtrPrecomputado(mirna_id = df_mirna_id_seq$mirna_id, 
                                                                     utr_id = df_gen_utr_id_seq$utr_id, 
                                                                     updateProgress = updateProgress)
       #browser()
-      if (is.null(mensaje_error) == FALSE) { return(MostrarMensajeUsuario(mensaje)) } 
+      if (!is.null(mensaje_error)) { return(MostrarMensajeUsuario(mensaje)) } 
 
       #browser()
       input_user_id <- PrepararInputBD(mirna_input = df_mirna_id_seq, 
@@ -310,7 +310,7 @@ PrediccionTargets <- function(input, output, session)
                                        algoritmo = input$select_alg, 
                                        updateProgress = updateProgress)
 
-      if (is.null(mensaje_error) == FALSE) { return(MostrarMensajeUsuario(mensaje)) } 
+      if (!is.null(mensaje_error)) { return(MostrarMensajeUsuario(mensaje)) } 
       #browser()
        
       df_prediccion_final <- EjecutarAlgoritmoPrediccion(mirna_info = df_mirna_id_seq,
@@ -321,7 +321,7 @@ PrediccionTargets <- function(input, output, session)
                                                          updateProgress = updateProgress)
                                   
       #browser()
-      if (is.null(mensaje_error) == FALSE) 
+      if (!is.null(mensaje_error))
         { 
           MostrarMensajeUsuario(mensaje_error)
           
@@ -389,7 +389,7 @@ PrediccionTargets <- function(input, output, session)
             df_mirna_input_precomp <- ConsultarDatosBD(con_db = con, consulta = consulta_sql)
             DesconectarBD(con_db = con)
             
-            if (is.null(mensaje_error) == FALSE) return(EnCasoDeError("e", e))
+            if (!is.null(mensaje_error)) return(EnCasoDeError("e", e))
             
             ##browser()
             if(nrow(df_mirna_input_precomp) > 0)
@@ -415,7 +415,7 @@ PrediccionTargets <- function(input, output, session)
               ##browser()
               
               df_utr_precomp <- ConsultarDatosBD(con_db = con, consulta = consulta_sql)
-              if (is.null(mensaje_error) == FALSE) return(EnCasoDeError("e", e))
+              if (!is.null(mensaje_error)) return(EnCasoDeError("e", e))
               ##browser()
               
               if(nrow(df_utr_precomp) > 0)
@@ -458,7 +458,7 @@ PrediccionTargets <- function(input, output, session)
       colnames(df_pares_mirna_utr) <- c("mirna_id", "utr_id")
       
       con <- ConectarBD()
-      if (is.null(mensaje_error) == FALSE) { DesconectarBD(con_db = con); return(FALSE) } 
+      if (!is.null(mensaje_error)) { DesconectarBD(con_db = con); return(FALSE) } 
       
       for (i in 1 : nrow(df_pares_mirna_utr))
         {
@@ -469,7 +469,7 @@ PrediccionTargets <- function(input, output, session)
           consulta_sql <- sprintf(SQL_SELECT_BINDINGSITES_PAR_MIRNAUTR_PRECOMP, df_pares_mirna_utr$mirna_id[i], df_pares_mirna_utr$utr_id[i])
           datos <- ConsultarDatosBD(con_db = con, consulta_sql = consulta_sql)
           #browser()
-          if (is.null(mensaje_error) == FALSE) { DesconectarBD(con_db = con); return(FALSE) } 
+          if (!is.null(mensaje_error)) { DesconectarBD(con_db = con); return(FALSE) } 
           
           ##browser()
           # Puede haber un par con más de un binding-site. Se guarda tb el bs_id de la tabla para diferenciarlos
@@ -541,7 +541,7 @@ PrediccionTargets <- function(input, output, session)
               data <- ConsultarDatosBD (con_db = con, consulta_sql = consulta_sql)
               ##browser()
               
-              if (is.null(mensaje_error) == FALSE) {DesconectarBD(con_db = con); error(logger, e); return(FALSE) }
+              if (!is.null(mensaje_error)) {DesconectarBD(con_db = con); error(logger, e); return(FALSE) }
               
               ##browser()
               df_binding_sites_bd <- rbind.data.frame(df_binding_sites_bd, data, stringsAsFactors = FALSE)
@@ -549,7 +549,7 @@ PrediccionTargets <- function(input, output, session)
               DesconectarBD(con_db = con)
           }
           ##browser()
-          if (is.null(mensaje_error) == FALSE) { DesconectarBD(con_db = con); error(logger, e); return(FALSE) }
+          if (!is.null(mensaje_error)) { DesconectarBD(con_db = con); error(logger, e); return(FALSE) }
           #showModal(AbrirVentanaModal(mensaje = msg_modal_pares_precomp))      
       }
       return (df_binding_sites_bd)
@@ -599,13 +599,13 @@ PrediccionTargets <- function(input, output, session)
       
       ##browser()
       con <- ConectarBD()
-      if (is.null(mensaje_error) == FALSE) { dbRollback(conn = con); return(FALSE) }
+      if (!is.null(mensaje_error)) { dbRollback(conn = con); return(FALSE) }
       ##browser()
       
       # Se agrupan todas las consultas en una transacción para poder hacer rollback si falla alguna.
       consulta_sql <- "BEGIN TRANSACTION"
       EjecutarConsultaBD (con_db = con, consulta_sql = consulta_sql)
-      if (is.null(mensaje_error) == FALSE) { dbRollback(conn = con); DesconectarBD(con_db = con); return(FALSE) }
+      if (!is.null(mensaje_error)) { dbRollback(conn = con); DesconectarBD(con_db = con); return(FALSE) }
       
       # TABLA input_user
       consulta_sql <- sprintf(SQL_INSERT_INPUT_USER, 
@@ -614,7 +614,7 @@ PrediccionTargets <- function(input, output, session)
                               df_input$input_gen_id, df_input$input_utr_id,
                               df_input$input_alg)
       EjecutarConsultaBD(con_db = con, consulta_sql = consulta_sql)
-      if (is.null(mensaje_error) == FALSE) { dbRollback(con); DesconectarBD(con_db = con); return(FALSE) }
+      if (!is.null(mensaje_error)) { dbRollback(con); DesconectarBD(con_db = con); return(FALSE) }
       
       ##browser()
       # TABLA mirna
@@ -627,7 +627,7 @@ PrediccionTargets <- function(input, output, session)
           consulta_sql <- sprintf(SQL_SELECT_COUNT_MIRNA, mirna_input$mirna_id[i])
           #browser()
           data <- ConsultarDatosBD(con_db = con, consulta_sql = consulta_sql)  
-          if (is.null(mensaje_error) == FALSE) { dbRollback(conn = con); DesconectarBD(con_db = con); return(FALSE) }
+          if (!is.null(mensaje_error)) { dbRollback(conn = con); DesconectarBD(con_db = con); return(FALSE) }
           ##browser()
           if(data$count == 0)
             {
@@ -639,10 +639,10 @@ PrediccionTargets <- function(input, output, session)
           
           
           EjecutarConsultaBD(con_db = con, consulta_sql = consulta_sql)  
-          if (is.null(mensaje_error) == FALSE) { dbRollback(conn = con); DesconectarBD(con_db = con); return(FALSE) }
+          if (!is.null(mensaje_error)) { dbRollback(conn = con); DesconectarBD(con_db = con); return(FALSE) }
       }
       
-      if (is.null(mensaje_error) == FALSE) { dbRollback(conn = con); DesconectarBD(con_db = con); return(FALSE) }
+      if (!is.null(mensaje_error)) { dbRollback(conn = con); DesconectarBD(con_db = con); return(FALSE) }
       
       # TABLA gen
       #browser()
@@ -662,10 +662,10 @@ PrediccionTargets <- function(input, output, session)
           }
 
           EjecutarConsultaBD(con_db = con, consulta_sql = consulta_sql)  
-          if (is.null(mensaje_error) == FALSE) { dbRollback(conn = con); DesconectarBD(con_db = con); return(FALSE) }
+          if (!is.null(mensaje_error)) { dbRollback(conn = con); DesconectarBD(con_db = con); return(FALSE) }
       }
       
-      if (is.null(mensaje_error) == FALSE) { dbRollback(conn = con); DesconectarBD(con_db = con); return(FALSE) }
+      if (!is.null(mensaje_error)) { dbRollback(conn = con); DesconectarBD(con_db = con); return(FALSE) }
       
       #browser()
       
@@ -676,7 +676,7 @@ PrediccionTargets <- function(input, output, session)
         
           consulta_sql <- sprintf(SQL_SELECT_COUNT_UTR, utr_input$utr_id[i])
           data <- ConsultarDatosBD(con_db = con, consulta_sql = consulta_sql)  
-          if (is.null(mensaje_error) == FALSE) { DesconectarBD(con_db = con); return(FALSE) }
+          if (!is.null(mensaje_error)) { DesconectarBD(con_db = con); return(FALSE) }
           if(data$count == 0)
             {
               consulta_sql <- sprintf(SQL_INSERT_UTR, utr_input$utr_id[i], utr_input$utr_ref[i], utr_input$utr_precomp[i], utr_input$utr_seq[i], utr_input$gen_id[i]) 
@@ -687,11 +687,11 @@ PrediccionTargets <- function(input, output, session)
           
           
           EjecutarConsultaBD(con_db = con, consulta_sql = consulta_sql)  
-          if (is.null(mensaje_error) == FALSE) { dbRollback(conn = con); DesconectarBD(con_db = con); return(FALSE) }
+          if (!is.null(mensaje_error)) { dbRollback(conn = con); DesconectarBD(con_db = con); return(FALSE) }
       }
       ##browser()
       
-      if (is.null(mensaje_error) == FALSE) { dbRollback(conn = con); DesconectarBD(con_db = con); return(FALSE) }
+      if (!is.null(mensaje_error)) { dbRollback(conn = con); DesconectarBD(con_db = con); return(FALSE) }
       
       # Se hace commit a todos los insert y update
       dbCommit(conn = con)
@@ -700,12 +700,12 @@ PrediccionTargets <- function(input, output, session)
       DesconectarBD(con_db = con)
       
       con <- ConectarBD()
-      if (is.null(mensaje_error) == FALSE) { return(FALSE) }
+      if (!is.null(mensaje_error)) { return(FALSE) }
       
       consulta_sql <- sprintf(SQL_SELECT_INPUT_USER_ID, df_input$input_datetime)
       #browser()
       rs <- ConsultarDatosBD(con_db = con, consulta_sql = consulta_sql)  
-      if (is.null(mensaje_error) == FALSE) { return(FALSE) }
+      if (!is.null(mensaje_error)) { return(FALSE) }
       
       input_user_id <- rs$input_id
       #browser()
@@ -775,7 +775,7 @@ PrediccionTargets <- function(input, output, session)
                                                 "bs_seq_region_total_end", "bs_score", "bs_scoring_matrix", "bs_other", "bs_type")
        ##################
        
-      if (is.null(mensaje_error) == FALSE) { return(FALSE) }
+      if (!is.null(mensaje_error)) { return(FALSE) }
       
       # Se guardan los binding-sites potenciales identificados (si existen) con el campo bs_tipo = 0 (potenciales)
       if (nrow(df_binding_sites_potenciales) == 0)
@@ -785,14 +785,14 @@ PrediccionTargets <- function(input, output, session)
       }else
         {
           con <- ConectarBD()
-          if (is.null(mensaje_error) == FALSE) { return(FALSE) }              
+          if (!is.null(mensaje_error)) { return(FALSE) }              
           
           # Se guarda en la base de datos
           # Se agrupan todas las consultas en una transacción para poder hacer rollback si falla alguna.
           consulta_sql <- "BEGIN TRANSACTION"
           EjecutarConsultaBD(con_db = con, consulta_sql = consulta_sql)
     
-          if (is.null(mensaje_error) == FALSE) { dbRollback(conn = con); DesconectarBD(con_db = con); return(FALSE) }
+          if (!is.null(mensaje_error)) { dbRollback(conn = con); DesconectarBD(con_db = con); return(FALSE) }
   
           # Se guardan los binding-sites  
           for(i in 1 : nrow(df_binding_sites_potenciales))
@@ -824,7 +824,7 @@ PrediccionTargets <- function(input, output, session)
                                       
               
               data <- ConsultarDatosBD(con_db = con, consulta_sql = consulta_sql)
-              if (is.null(mensaje_error) == FALSE) { dbRollback(conn = con); DesconectarBD(con_db = con); return(FALSE) }
+              if (!is.null(mensaje_error)) { dbRollback(conn = con); DesconectarBD(con_db = con); return(FALSE) }
               #browser()
               if(nrow(data) == 0) # Si es nuevo se inserta
                 {
@@ -879,7 +879,7 @@ PrediccionTargets <- function(input, output, session)
               }
               #browser()
               EjecutarConsultaBD(con_db = con, consulta_sql = consulta_sql)
-              if (is.null(mensaje_error) == FALSE) { dbRollback(conn = con); DesconectarBD(con_db = con); return(FALSE) }
+              if (!is.null(mensaje_error)) { dbRollback(conn = con); DesconectarBD(con_db = con); return(FALSE) }
               
               # Se guardan los bs_id para el paso siguiente (esto es sólo para que funcione el ejemplo. En real se elimina)
               consulta_sql <- sprintf(SQL_SELECT_BS_ID_POTENCIALES, 
@@ -905,7 +905,7 @@ PrediccionTargets <- function(input, output, session)
                                       0)
               
               datos <- ConsultarDatosBD(con_db = con, consulta_sql = consulta_sql)
-              if (is.null(mensaje_error) == FALSE) { dbRollback(conn = con); DesconectarBD(con_db = con); return(FALSE) }
+              if (!is.null(mensaje_error)) { dbRollback(conn = con); DesconectarBD(con_db = con); return(FALSE) }
               if (nrow(datos) != 0) {
                   v_bs_id <- c(v_bs_id, datos$bs_id)
               }
@@ -916,13 +916,13 @@ PrediccionTargets <- function(input, output, session)
           DesconectarBD(con_db = con) # Se cierra la conexión
         }
       
-      if (is.null(mensaje_error) == FALSE) { return(FALSE) } 
+      if (!is.null(mensaje_error)) { return(FALSE) } 
        
       #browser()  
       #### 2. Obtención de features
       
       df_features <- ObtenerFeatures(binding_sites_potenciales = df_binding_sites_potenciales)
-      if (is.null(mensaje_error) == FALSE) { return(FALSE) }
+      if (!is.null(mensaje_error)) { return(FALSE) }
       #browser()
       ## CASO DE PRUEBA
       df_features <- data.frame(v_bs_id[1], 15, 23.2, 3.3, '{"seed": {"7mer-m8": 12}}', 4, 3,'{"conservation": "conserved"}', 43.2, '{"free_energy1": 23.2}', 
@@ -968,11 +968,11 @@ PrediccionTargets <- function(input, output, session)
       }else
         {
           con <- ConectarBD()
-          if (is.null(mensaje_error) == FALSE) { return(FALSE) }
+          if (!is.null(mensaje_error)) { return(FALSE) }
       
           consulta_sql <- "BEGIN TRANSACTION"
           EjecutarConsultaBD(con_db = con, consulta_sql = consulta_sql)
-          if (is.null(mensaje_error) == FALSE) { dbRollback(conn = con); DesconectarBD(con_db = con); return(FALSE) }
+          if (!is.null(mensaje_error)) { dbRollback(conn = con); DesconectarBD(con_db = con); return(FALSE) }
           
           # Se insertan los features
           for(i in 1 : nrow(df_features))
@@ -983,7 +983,7 @@ PrediccionTargets <- function(input, output, session)
               consulta_sql <- sprintf(SQL_SELECT_BS_FEAT_ID, as.integer(df_features$bs_id[i]))
               datos <- ConsultarDatosBD(con_db = con, consulta_sql = consulta_sql)
               #browser()
-              if (is.null(mensaje_error) == FALSE) { dbRollback(conn = con); DesconectarBD(con_db = con); return(FALSE) }
+              if (!is.null(mensaje_error)) { dbRollback(conn = con); DesconectarBD(con_db = con); return(FALSE) }
               
               if (is.na(datos$feat_id)) # Si es nuevo se inserta
                 {
@@ -1018,13 +1018,13 @@ PrediccionTargets <- function(input, output, session)
                                           
                   
                   EjecutarConsultaBD(con_db = con, consulta_sql = consulta_sql)
-                  if (is.null(mensaje_error) == FALSE) { dbRollback(conn = con); DesconectarBD(con_db = con); return(FALSE) }
+                  if (!is.null(mensaje_error)) { dbRollback(conn = con); DesconectarBD(con_db = con); return(FALSE) }
                   #browser()
                   
-                  if (is.null(mensaje_error) == FALSE) { dbRollback(conn = con); DesconectarBD(con_db = con); return(FALSE) }
+                  if (!is.null(mensaje_error)) { dbRollback(conn = con); DesconectarBD(con_db = con); return(FALSE) }
                                           
                   #EjecutarConsultaBD(con_db = con, consulta_sql = consulta_sql)
-                  if (is.null(mensaje_error) == FALSE) { dbRollback(conn = con); DesconectarBD(con_db = con); return(FALSE) }
+                  if (!is.null(mensaje_error)) { dbRollback(conn = con); DesconectarBD(con_db = con); return(FALSE) }
               
               }else    # Si existe se actualiza
                 {
@@ -1057,16 +1057,16 @@ PrediccionTargets <- function(input, output, session)
                                           as.integer(datos$feat_id))
                   #browser()                      
                   EjecutarConsultaBD(con_db = con, consulta_sql = consulta_sql)
-                  if (is.null(mensaje_error) == FALSE) { dbRollback(conn = con); DesconectarBD(con_db = con); return(FALSE) }
+                  if (!is.null(mensaje_error)) { dbRollback(conn = con); DesconectarBD(con_db = con); return(FALSE) }
               }
   
-              if (is.null(mensaje_error) == FALSE) { dbRollback(conn = con); DesconectarBD(con_db = con); return(FALSE) }
+              if (!is.null(mensaje_error)) { dbRollback(conn = con); DesconectarBD(con_db = con); return(FALSE) }
           }
         }
         
       dbCommit(conn = con)            
       DesconectarBD(con_db = con) # Se cierra la conexión
-      if (is.null(mensaje_error) == FALSE) { return(FALSE) } 
+      if (!is.null(mensaje_error)) { return(FALSE) } 
       
     ##### 3. Evaluación de binding-sites potenciales
       #browser()
@@ -1076,7 +1076,7 @@ PrediccionTargets <- function(input, output, session)
       
       v_binding_sites_definitivos <- c(v_bs_id[1], v_bs_id[2], v_bs_id[3])
       
-      if (is.null(mensaje_error) == FALSE) { return(FALSE) }  
+      if (!is.null(mensaje_error)) { return(FALSE) }  
       
       if (length(v_binding_sites_definitivos) == 0)
         {
@@ -1086,12 +1086,12 @@ PrediccionTargets <- function(input, output, session)
         {
           #df_mirna_id_seq <- sort(v_binding_sites_definitivos) # Descomentar en real
           con <- ConectarBD()
-          if (is.null(mensaje_error) == FALSE) { return(FALSE) }  
+          if (!is.null(mensaje_error)) { return(FALSE) }  
           
           consulta_sql <- "BEGIN TRANSACTION"
           EjecutarConsultaBD(con_db = con, consulta_sql = consulta_sql)
           
-          if (is.null(mensaje_error) == FALSE) { dbRollback(conn = con); DesconectarBD(con_db = con); return(FALSE) }
+          if (!is.null(mensaje_error)) { dbRollback(conn = con); DesconectarBD(con_db = con); return(FALSE) }
         
           for(i in 1 : length(v_binding_sites_definitivos))
             {
@@ -1101,7 +1101,7 @@ PrediccionTargets <- function(input, output, session)
               consulta_sql <- sprintf(SQL_UPDATE_BINDING_SITES_ID, 1, v_binding_sites_definitivos[i])
               
               EjecutarConsultaBD(con_db = con, consulta_sql = consulta_sql)
-              if (is.null(mensaje_error) == FALSE) { dbRollback(conn = con); DesconectarBD(con_db = con); return(FALSE) }
+              if (!is.null(mensaje_error)) { dbRollback(conn = con); DesconectarBD(con_db = con); return(FALSE) }
           }
         
           dbCommit(conn = con)            
@@ -1113,11 +1113,11 @@ PrediccionTargets <- function(input, output, session)
       #browser()
       
       con <- ConectarBD()
-      if (is.null(mensaje_error) == FALSE) { return(FALSE) }
+      if (!is.null(mensaje_error)) { return(FALSE) }
       
       consulta_sql <- sprintf(SQL_BINDING_SITES_DEFINITIVOS, v_binding_sites_definitivos)
       datos <- ConsultarDatosBD(con_db = con, consulta_sql = consulta_sql)
-      if (is.null(mensaje_error) == FALSE) { DesconectarBD(con_db = con); return(FALSE) }  
+      if (!is.null(mensaje_error)) { DesconectarBD(con_db = con); return(FALSE) }  
       #browser()
       DesconectarBD(con)
       
@@ -1162,11 +1162,11 @@ PrediccionTargets <- function(input, output, session)
                     
           #browser()
           con <- ConectarBD()
-          if (is.null(mensaje_error) == FALSE) { return(FALSE) }
+          if (!is.null(mensaje_error)) { return(FALSE) }
           #browser()
           consulta_sql <- "BEGIN TRANSACTION"
           EjecutarConsultaBD(con_db = con, consulta_sql = consulta_sql)
-          if (is.null(mensaje_error) == FALSE) { DesconectarBD(con_db = con); return(FALSE) }
+          if (!is.null(mensaje_error)) { DesconectarBD(con_db = con); return(FALSE) }
           
           v_tg_id <- c()
           # Se guardan los datos en targets
@@ -1176,7 +1176,7 @@ PrediccionTargets <- function(input, output, session)
                                       df_prediccion_final$mirna_id[i], df_prediccion_final$utr_id[i], df_prediccion_final$bs_id[i])
             
               datos <- ConsultarDatosBD(con_db = con, consulta_sql = consulta_sql)
-              if (is.null(mensaje_error) == FALSE) { dbRollback(conn = con); DesconectarBD(con_db = con); return(FALSE) }
+              if (!is.null(mensaje_error)) { dbRollback(conn = con); DesconectarBD(con_db = con); return(FALSE) }
               
               #browser()
               if(nrow(datos) == 0)
@@ -1195,12 +1195,12 @@ PrediccionTargets <- function(input, output, session)
             
             #browser()
             rs <- EjecutarConsultaBD(con_db = con, consulta_sql = consulta_sql)
-            if (is.null(mensaje_error) == FALSE) { dbRollback(conn = con); DesconectarBD(con_db = con); return(FALSE) }
+            if (!is.null(mensaje_error)) { dbRollback(conn = con); DesconectarBD(con_db = con); return(FALSE) }
             datos <- fetch(rs)
             dbClearResult(rs)
             v_tg_id <- c(v_tg_id, datos$tg_id)
             
-            if (is.null(mensaje_error) == FALSE) { dbRollback(conn = con); DesconectarBD(con_db = con); return(FALSE) }
+            if (!is.null(mensaje_error)) { dbRollback(conn = con); DesconectarBD(con_db = con); return(FALSE) }
           }
           
         dbCommit(con)
@@ -1213,14 +1213,14 @@ PrediccionTargets <- function(input, output, session)
       
       consulta_sql <- sprintf(SQL_INSERT_OUTPUT_USER, df_output_user$ouput_datetime, df_output_user$input_id,  df_output_user$output_target)
       EjecutarConsultaBD(con_db = con, consulta_sql = consulta_sql)
-      if (is.null(mensaje_error) == FALSE) { DesconectarBD(con_db = con); return(FALSE) }
+      if (!is.null(mensaje_error)) { DesconectarBD(con_db = con); return(FALSE) }
       
       # Se actualizan todos los binding-sites a potenciales (valor: 0)
       con <- ConectarBD()
-      if (is.null(mensaje_error) == FALSE) { return(FALSE) }
+      if (!is.null(mensaje_error)) { return(FALSE) }
       
       datos <- ConsultarDatosBD(con_db = con, consulta_sql = SQL_UPDATE_BINDING_SITES_TYPE)
-      if (is.null(mensaje_error) == FALSE) { DesconectarBD(con_db = con); return(FALSE) }
+      if (!is.null(mensaje_error)) { DesconectarBD(con_db = con); return(FALSE) }
       
       DesconectarBD(con)
       return (df_prediccion_final)
@@ -1241,19 +1241,14 @@ PrediccionTargets <- function(input, output, session)
       df_targets <- data.frame(stringsAsFactors = FALSE)
       v_target_id <- paste(target_id, collapse = ",")
       con <- ConectarBD()
-      if (is.null(mensaje_error) == FALSE) { return(df_targets) }
+      if (!is.null(mensaje_error)) { return(df_targets) }
       
       consulta_sql <- sprintf(SQL_SELECT_TARGETS, v_target_id)
       
       df_targets <- ConsultarDatosBD(con_db = con, consulta_sql = consulta_sql)
-      if (is.null(mensaje_error) == FALSE) { DesconectarBD(con_db = con); return(df_targets) }
+      if (!is.null(mensaje_error)) { DesconectarBD(con_db = con); return(df_targets) }
       
       DesconectarBD(con)
       return(df_targets)
   }
 
-
-
-  
-  
-  
