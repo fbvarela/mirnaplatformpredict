@@ -54,7 +54,7 @@ if(!require(jsonlite)){
         warning = function(w) { print(paste("WARNING: ", w)); mensaje_aviso <<- msg_aviso_dataset_ensembl; debug(logger, w); return(FALSE) },
         error = function(e)   { print(paste("ERROR: ", e));   mensaje_error <<- msg_error_dataset_ensembl; error(logger, e); return(FALSE) }
       )
-      if (is.null(dat_ensembl) == FALSE)
+      if (!is.null(dat_ensembl))
         {
         dat_ensembl <- sort(listDatasets(dat_ensembl)$dataset)
       }
@@ -149,7 +149,7 @@ if(!require(jsonlite)){
         {
           df_mirna_id_seq_bd <- RecuperarMirnaBD(mirna_id = sub(pattern = "\\|.*", "", x = names(objeto_fasta)))
       }
-      if (is.null(mensaje_error) == FALSE) return(FALSE)
+      if (!is.null(mensaje_error)) return(FALSE)
       
       tryCatch( 
         if(is.null(objeto_fasta))
@@ -163,7 +163,7 @@ if(!require(jsonlite)){
                 data_mirna_id <- unique(sort(df_mirna_id_seq_bd$mirna_id))
                 idx <- which(mirna_id %in% data_mirna_id)
                 v_mirna_id <- v_mirna_id[-idx]
-                if(is.null(v_mirna_id) == FALSE) v_mirna_id <- unique(sort(v_mirna_id))
+                if(!is.null(v_mirna_id)) v_mirna_id <- unique(sort(v_mirna_id))
             }
             
             v_mirna_id <- unique(sort(v_mirna_id))
@@ -279,7 +279,7 @@ if(!require(jsonlite)){
       if (data_sel[1] == "Todos") data_sel <- data_sel[-1] # Se elimina "Todos" del vector de datasets
       #browser()
       # Se comprueba si el extremo 3'UTR está en la base datos antes de consultar con Biomart 
-      if(is.null(gen_id) == FALSE)
+      if(!is.null(gen_id))
         {
           df_gen_utr_id_seq_bd <- RecuperarUtrBD(gen_id = paste(gen_id, collapse = "','"))
       }else
@@ -287,7 +287,7 @@ if(!require(jsonlite)){
           df_gen_utr_id_seq_bd <- RecuperarUtrBD(utr_id = sub(pattern = ".*\\|", "", x = names(objeto_fasta)))
         }
 
-      if (is.null(mensaje_error) == FALSE) return(FALSE)
+      if (!is.null(mensaje_error)) return(FALSE)
       #browser()
       if(is.null(objeto_fasta))
         {
@@ -299,7 +299,7 @@ if(!require(jsonlite)){
             
               idx <- which(v_gen_id %in% data_gen_id)
               v_gen_id_no_precomp <- v_gen_id[-idx]
-              if (is.null(v_gen_id_no_precomp) == FALSE) v_gen_id_no_precomp <- unique(sort(v_gen_id_no_precomp))
+              if (!is.null(v_gen_id_no_precomp)) v_gen_id_no_precomp <- unique(sort(v_gen_id_no_precomp))
           }else
             {
               v_gen_id_no_precomp <- v_gen_id
@@ -339,7 +339,7 @@ if(!require(jsonlite)){
                       error = function(e)   { print(paste("ERROR: ", e));    mensaje_error <<- msg_error_biomart_xml_utr_ensembl; error(logger, e); return(FALSE) }
                     )
                   ##browser()
-                  #if (is.null(mensaje_error) == FALSE) return(df_gen_utr_id_seq <- NULL)
+                  #if (!is.null(mensaje_error)) return(df_gen_utr_id_seq <- NULL)
                   ##browser()
                   if (file.info(ruta_archivo_API_fasta)$size != 0)  # Se comprueba si el archivo contiene datos
                     {
@@ -350,7 +350,7 @@ if(!require(jsonlite)){
                           error = function(e)   { print(paste("ERROR: ", e));   mensaje_error <<- msg_error_archivo_fasta_utr_ensembl; error(logger, e); return(FALSE) }
                         )
                   
-                    if (is.null(mensaje_error) == FALSE) return(df_gen_utr_id_seq)
+                    if (!is.null(mensaje_error)) return(df_gen_utr_id_seq)
                     ##browser()
                     fileConn <- file(ruta_archivo_seq_validas_API_fasta)
                     
@@ -366,7 +366,7 @@ if(!require(jsonlite)){
                       {
                         objeto_fasta_utr <- LeerArchivoFasta(archivo = ruta_archivo_validas_API_fasta)
                     }
-                    if (is.null(mensaje_error) == FALSE) return(FALSE)
+                    if (!is.null(mensaje_error)) return(FALSE)
                   }
               }
           }
@@ -376,7 +376,7 @@ if(!require(jsonlite)){
            objeto_fasta_utr <- objeto_fasta      
         }
       #tryCatch( 
-        if(is.null(objeto_fasta_utr) == FALSE)
+        if (!is.null(objeto_fasta_utr))
           {
             #browser()
             mapply(names(objeto_fasta_utr), getSequence(objeto_fasta_utr), 
@@ -498,7 +498,7 @@ if(!require(jsonlite)){
                 error = function(e)   { print(paste("ERROR: ", e));   mensaje_error <<- msg_error_biomart_utr_ensembl; error(logger, e); return(FALSE) } 
             )
           
-          if (is.null(mensaje_error) == FALSE) return(FALSE)
+          if (!is.null(mensaje_error)) return(FALSE)
             
           es_gen_ref <- sapply(df_es_ref$gen_id, function(x) { if(length(which(x %in% relacion_gen_total[,1])) == 0) 0 else 1 })  
           df_es_ref$gen_ref <- es_gen_ref
@@ -534,14 +534,14 @@ if(!require(jsonlite)){
       print("Entrando en RecuperarMirnaBD") 
       
       con <- ConectarBD()
-      if (is.null(mensaje_error) == FALSE) { return(FALSE) }
+      if (!is.null(mensaje_error)) { return(FALSE) }
     
       v_mirna_id <- unique(sort(mirna_id))
       #browser()
       consulta_sql <- sprintf(SQL_SELECT_MIRNA, mirna_id)
     
       data <- ConsultarDatosBD(con_db = con, consulta_sql = consulta_sql)
-      if (is.null(mensaje_error) == FALSE) { DesconectarBD(con_db = con); return(FALSE) }
+      if (!is.null(mensaje_error)) { DesconectarBD(con_db = con); return(FALSE) }
       
       DesconectarBD(con_db = con)
       
@@ -566,10 +566,10 @@ if(!require(jsonlite)){
       print("Entrando en RecuperarUtrBD") 
     
       con <- ConectarBD()
-      if (is.null(mensaje_error) == FALSE) { return(FALSE) }
+      if (!is.null(mensaje_error)) { return(FALSE) }
       
       data <- NULL
-      if (is.null(gen_id) == FALSE)
+      if (!is.null(gen_id))
         {
           consulta_sql <- sprintf(SQL_SELECT_UTR1, gen_id)
       }else
@@ -577,7 +577,7 @@ if(!require(jsonlite)){
           consulta_sql <- sprintf(SQL_SELECT_UTR2, utr_id)
       }
       data <- ConsultarDatosBD(con_db = con, consulta_sql = consulta_sql)
-      if (is.null(mensaje_error) == FALSE) { DesconectarBD(con_db = con); return(FALSE) }
+      if (!is.null(mensaje_error)) { DesconectarBD(con_db = con); return(FALSE) }
       #browser()
       DesconectarBD(con_db = con)
       print("Saliendo de RecuperarUtrBD") 
