@@ -130,7 +130,7 @@ PrediccionTargets <- function(input, output, session)
           }
       }   
       
-      else if ((text_mirna != "" && is.null(input$file_utr) == FALSE)  && text_gen == "" && is.null(input$file_mirna))  # campos 1 y 4
+      else if ((text_mirna != "" && !is.null(input$file_utr))  && text_gen == "" && is.null(input$file_mirna))  # campos 1 y 4
         {
           print("Selección de campos 1 y 4")
           
@@ -180,7 +180,7 @@ PrediccionTargets <- function(input, output, session)
               browser()
           }
         }
-        else if ((text_gen != "" && is.null(input$file_mirna) == FALSE)  && text_mirna == "" && is.null(input$file_utr))  # campos 2 y 3
+        else if ((text_gen != "" && !is.null(input$file_mirna))  && text_mirna == "" && is.null(input$file_utr))  # campos 2 y 3
           {
             print("Selección de campos 2 y 3")
             #browser()
@@ -229,7 +229,7 @@ PrediccionTargets <- function(input, output, session)
             }
         }
         
-        else if ((text_mirna == "" && text_gen == "") && is.null(input$file_mirna) == FALSE && is.null(input$file_utr) == FALSE) # campos 3 y 4
+        else if ((text_mirna == "" && text_gen == "") && !is.null(input$file_mirna) && !is.null(input$file_utr)) # campos 3 y 4
           {
             ##browser()
             print("Selección de campos 3 y 4")
