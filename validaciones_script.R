@@ -104,7 +104,7 @@
           error = function(e)   { print(paste("ERROR: ", e));   mensaje_error <<- msg_error_validacion_fasta; return(FALSE) }
       )
       #browser()
-      if (is.null(mensaje_error) == FALSE) return(FALSE) else return(TRUE)
+      if (!is.null(mensaje_error)) return(FALSE) else return(TRUE)
       print("salida de ValidarArchivoFasta")
       
   }
